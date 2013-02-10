@@ -6,10 +6,13 @@
 	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
 	<style type="text/css">
 	.plane{	
-		-webkit-transform: rotate3d(0,0,0,0deg);
-		   -moz-transform: rotate3d(0,0,0,0deg); 
-		        transform: rotate3d(0,0,0,0deg); 
-	}
+		-webkit-transform: rotate3d(0, 0, 0, 0deg);
+		   -moz-transform: rotate3d(0, 0, 0, 0deg); 
+		    -ms-transform: rotate3d(0, 0, 0, 0deg); 
+		        transform: rotate3d(0, 0, 0, 0deg); 
+		
+	}	
+	
 	header,form{
 		background: rgba(255,255,255,.9);
 	}
@@ -19,12 +22,12 @@
 	</style>
 </head>
 <body>
-    <header>
+<header>
         <h1>3D CSS Transforms: <code>rotate3d()</code></h1>
         <p>Adjust the value below to understand the effect of <code id="r3d">rotate3d()</code>.</p>
     </header>
     
-    <form id="rotate3">
+   <form id="rotate3" action="#">
     	<p>
     	<label for="x">x</label>
     	<input type="number" id="x" name="x" value="0" required>
@@ -42,11 +45,11 @@
     	
     	<p>
     	<label for="angle">angle</label>
-    	<input type="text" id="angle" name="angle" value="0deg"  pattern="-|[.0-9]{1,}(deg|turn|rad|grad)">
+    	<input type="text" id="angle" name="angle" value="0deg" required">
     	</p>
     	<p><button type="submit">Update</button> <button type="reset">Reset</button></p>
     	<br style="clear:both;">
-    </form>
+    </form> 
 
     <div id="stage" class="perspective rotate3d">
         <div class="plane">1</div>
@@ -61,18 +64,37 @@ var form = document.forms[0];
 
 form.addEventListener('reset', function(e){
 	var css = document.styleSheets[1],
-	    newrule = css.cssRules[0].cssText.replace(/rotate3d\([0-9]{1,}\, [0-9]{1,}, [0-9]{1,}, [0-9]{1,}(deg|grad|turn|rad)/,"rotate3d(0,0,0,0$1");
-	    css.insertRule(newrule,0); // Insert at the top of the rule stack.
-	    css.deleteRule(1);         // Delete what is now the second rule.
+	    current = css.cssRules[0].cssText.split(':'),
+	    newrule = current[0] + ": rotate3d(0, 0, 0, 0deg); }";
+	    
+	css.insertRule(newrule,0); // Insert at the top of the rule stack.
+	css.deleteRule(1);         // Delete what is now the second rule.
+	
 } ,false);
 
 form.addEventListener('submit', function(e){
+	
 	e.preventDefault();
+	
 	var css = document.styleSheets[1],  // using the embedded style sheet.
 		inp = document.querySelectorAll('input'),
-		newrule = css.cssRules[0].cssText.replace(/rotate3d\([0-9]{1,}\, [0-9]{1,}, [0-9]{1,}, [0-9]{1,}deg|grad|turn|rad/,'rotate3d('+inp[0].value+','+inp[1].value+','+inp[2].value+','+inp[3].value)
+		current = css.cssRules[0].cssText.split(':'),
+		val = [],
+		rotate3d = ': rotate3d(',
+		newrule = '';
+		
+		// build new values
+		val[0] = +(inp[0].value);
+		val[1] = +(inp[1].value);
+		val[2] = +(inp[2].value);
+		val[3] = inp[3].value;
+		
+		newrule = current[0];
+		newrule += rotate3d += val.join(',') + ');}';
+		
 		css.insertRule(newrule,0); // Insert at the top of the rule stack.
 		css.deleteRule(1);         // Delete what is now the second rule.
+
 },false)
 </script>
 

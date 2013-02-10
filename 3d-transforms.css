@@ -227,3 +227,5 @@ label{font-weight: bold;}
 input[type]{font:inherit;}
 label{font-family:monospace;}
 button{margin-top:20px; font:sans-serif; background-color:#03c; color:#fff;border:1px solid #03c}
+
+#rotate3 p{display:inline-block;}
