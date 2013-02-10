@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>3D CSS Transforms: Perspective</title>
+	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+	<style>
+    .facet:first-child{
+        -webkit-transform: matrix3d(2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, -0.015, 0, 0, 0, 1);
+        -webkit-transform: matrix3d(2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, -0.005, 0, 0, 0, 1);
+
+    }
+
+	</style>
+</head>
+<body>
+
+<!---
+rotateX(-22deg) scale(2) = matrix3d(2, 0, 0, 0, 0, 1.8543677091335748, -0.749213186831824, 0, 0, 0.374606593415912, 0.9271838545667874, 0, 0, 0, 0, 1)
+
+scale(2) rotateX(-22deg) = matrix3d(2, 0, 0, 0, 0, 1.8543677091335748, -0.374606593415912, 0, 0, 0.749213186831824, 0.9271838545667874, 0, 0, 0, 0, 1)
+
+-->
+
+
+    <header>
+        <h1>3D CSS Transforms: Perspective Function</h1>
+    </header>
+
+    <div id="stage" class="perspective">
+        <div class="facet">1</div>
+      <!--  <div class="facet">2</div>
+        <div class="facet">3</div> -->
+    </div>
+
+<script type="application/javascript" src="3d-transforms.js"></script>
+
+
+
+</body>
+</html>

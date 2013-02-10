@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>3D CSS Transforms: Perspective</title>
+	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+	<style>
+
+        #stage{margin:0;}
+
+        #stage div:nth-child(2){
+            -webkit-transform: perspective(200px) rotate3d(20,10,0,-45deg);
+               -moz-transform: perspective(200px) rotate3d(20,10,0,-45deg);
+                -ms-transform: perspective(200px) rotate3d(20,10,0,-45deg);
+        }
+	</style>
+</head>
+<body>
+    <!-- <header>
+        <h1>3D CSS Transforms: Perspective</h1>
+    </header> -->
+
+    <div id="stage" class="perspective">
+        <div class="facet">1</div>
+        <div class="facet">2</div>
+        <div class="facet">3</div>
+    </div>
+
+<script type="application/javascript" src="3d-transforms.js"></script>
+
+</body>
+</html>

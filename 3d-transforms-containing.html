@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>3D CSS Transforms: Containing Block</title>
+	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+</head>
+<body id="containing">
+   <header>
+        <h1>3D CSS Transforms: Containing Block</h1>
+        <p>In this example, a child element is absolutely-positioned inside of a parent element with <code>perspective: 500px</code> applied. Toggle the perspective property to understand how perspective creates a containing block.</p>
+    </header>
+
+    <form id="toggle">
+        <p>
+            <input type="checkbox" id="togglePersp" checked> <label for="togglePersp">Toggle <code>perspective</code></label>
+        </p>
+    </form>
+
+    <div id="stage" class="perspective">
+        <div class="facet">1</div>
+        <div class="facet">2</div>
+        <div class="facet">3</div>
+    </div>
+
+<script type="application/javascript" src="3d-transforms.js"></script>
+
+</body>
+</html>

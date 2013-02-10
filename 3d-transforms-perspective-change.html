@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>3D CSS Transforms: Changing Perspective</title>
+	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+	<style>
+	div{
+	    background: #eee;
+	    margin: 1rem;
+	}
+    div p{
+        text-align:center;
+    }
+    label{
+        font-family: monospace;
+    }
+	</style>
+</head>
+<body>
+    <header>
+        <h1>3D CSS Transforms: Perspective</h1>
+        <p>Adjust the value of the range to see how the value of perspective affects a 3d rotation transform (<code>rotate3d(0,10,0,-45deg)</code>)</p>
+    </header>
+
+    <form id="persprange">
+        <p><label for="perspective">perspective:</label> <input type="range" id="perspective" value="1500" min="1" max="3000"><span></span></p>
+    </form>
+
+    <div id="stage" style="-webkit-perspective: 500px; -moz-perspective: 500px; -ms-perspective: 500px; perspective: 500px;">
+        <div class="facet">1</div>
+        <div class="facet">2</div>
+        <div class="facet">3</div>
+    </div>
+
+<script type="application/javascript" src="3d-transforms.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>3D CSS Transforms</title>
+	<link rel="stylesheet" href="outline.css" type="text/css">
+</head>
+<body>
+<h1>Pithy headline about 3D Transforms here</h1>
+<p>Tiffany B. Brown</p>
+
+<ol>
+	<li>Introduction</li>
+	<li><a href="#perspective">Keeping it in perspective</a>
+	    <ol>
+	        <li><a href="#perspectiveprop"><code>perspective</code></a></li>
+	        <li><a href="#perspectiveorigin"><code>perspective-origin</code></a></li>
+        </ol>
+	</li>
+	<li><a href="#twosides">Two-sides to a transformed object</a>
+	<ol>
+	    <li><a href="#transstyle">transform-style</a></li>
+	    <li><a href="#backfacevisibility">backface-visibility</a></li>
+    </ol>
+    </li>
+	<li><a href="#transformfuncs">The transform functions</a>
+	<ol>
+	    <li><a href="#perspectivefunction">perspective()</a></li>
+		<li><a href="#matrix3d">matrix3d()</a></li>
+		<li><a href="#translating">Translating objects with <code>translate3d()</code> <code>translateZ()</code></a></li>
+        <li><a href="#scaling">Scaling objects with <code>scale3d()</code> 		and <code>scaleZ()</code></a></li>
+		<li><a href="#rotating">Rotating objects with  
+		    <code>rotate3d()</code>, <code>rotateX()</code> and <code>rotateY()</code></a>
+		</li>
+
+	</ol></li>
+	<li>Using with SVG</li>
+	<li>Optimizations and hardware acceleration??</li>
+</ol>
+
+<div class="note">
+
+http://people.opera.com/tiffanyb/wkresearch/transforms.html
+</div>
+
+<p>Opera 14 adds a lot of goodies under its hood. It includes support for several APIs and CSS3 specifications unavailable in previous versions of the browser. Among those: <a href="http://www.w3.org/TR/css3-transforms/">three-dimensional CSS transforms</a>. <a href="http://dev.opera.com/articles/view/css3-transitions-and-2d-transforms/">CSS Transforms</a> have been partially available since version 10.50. Support was limited, however, to two-dimensional transforms. With the release of Opera 14, developers can take full advantage of CSS3 transforms and their 3D power. Let's dig in.</p>
+
+<h2 id="perspective">Keeping perspective</h2>
+
+<p>What separates 3D transforms from 2D transforms is perspective: creating the illusion of depth and space on a two-dimensional screen by translating points along or around a z-axis.</p>
+
+<figure id="perspectivedrawing">
+<img src="3d-transforms-staircase.jpg" border="1">
+<figcaption>Figure 1: Staircase perspective drawing by <a href="http://en.wikipedia.org/wiki/File:Staircase_perspective.jpg">Luciano Testoni</a>.</figcaption>
+</figure>
+
+<p>If you've ever studied drawing, you've probably learned how to <a href="http://en.wikipedia.org/wiki/Perspective_(graphical)">draw in perspective</a>. Perspective is the way to create the illusion of three dimensions when you only have two to work with. First, you create a point on your drawing surface; this is known as the  <strong>vanishing point.</strong> Then you draw guidelines from the edges of that paper to your vanishing point. As you continue to work, these guidelines determine the relative size of each object drawn, tricking the viewer's eye into perceiving depth or distance. Three-dimensional transforms work similarly.</p>
+
+
+<p>If we think of our drawing surface as a coordinate system, we can also think of our vanishing point as the <strong>origin</strong>. In a three-dimensional coordinate system, the origin is the location where the point along the x, y, and z axes is equal to zero (0,0,0) (<a href="#origin">Figure XXX</a>).</p>
+
+<figure>
+<!-- SVG --->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="246.62244"
+   height="232.20605"
+   id="origin"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="xyz.svg"
+   inkscape:export-filename="/mamphtdocs/devopera/2013/3d-css-transforms/xyz.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <metadata
+     id="metadata29">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="950"
+     inkscape:window-height="670"
+     id="namedview27"
+     showgrid="false"
+     inkscape:zoom="1.0916667"
+     inkscape:cx="346.84253"
+     inkscape:cy="78.009696"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2"
+     fit-margin-top="1"
+     fit-margin-left="1"
+     fit-margin-right="0"
+     fit-margin-bottom="1" />
+  <defs
+     id="defs4">
+    <style
+       type="text/css"
+       id="style6">      
+      line {
+        fill: none;
+        stroke: black;
+        stroke-width: 2px;
+        marker-end: url(#marker-end);
+      }
+
+      text {
+        font-size: 11pt;
+        font-family: sans-serif;
+      }
+      </style>
+    <marker
+       id="marker-end"
+       viewBox="0 0 10 10"
+       refX="1"
+       refY="5"
+       markerUnits="strokeWidth"
+       orient="auto"
+       markerWidth="5"
+       markerHeight="7.5">
+      <polyline
+         points="0,0 10,5 0,10 1,5"
+         id="polyline9"
+         style="fill:#000000" />
+    </marker>
+  </defs>
+  <line
+     x1="78.323601"
+     y1="66.206055"
+     x2="78.323601"
+     y2="216.20605"
+     id="line11"
+     style="fill:none;stroke:#000000;stroke-width:2px;marker-end:url(#marker-end)" />
+  <line
+     x1="78.323601"
+     y1="66.206055"
+     x2="228.32361"
+     y2="66.206055"
+     id="line13"
+     style="fill:none;stroke:#000000;stroke-width:2px;marker-end:url(#marker-end)" />
+  <line
+     x2="8.3236008"
+     y2="16.206055"
+     x1="78.323601"
+     y1="66.206055"
+     id="line15"
+     style="fill:none;stroke:#000000;stroke-width:2px;marker-end:url(#marker-end)" />
+  <circle
+     cx="90"
+     cy="70"
+     r="4"
+     id="circle17"
+     sodipodi:cx="90"
+     sodipodi:cy="70"
+     sodipodi:rx="4"
+     sodipodi:ry="4"
+     style="fill:#ff0000"
+     transform="translate(-11.676399,-3.7939453)" />
+  <g
+     style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+     id="text19"
+     transform="translate(-231.6764,-3.7939453)">
+    <path
+       d="m 319.0498,52.376953 c -0.60612,1.039072 -1.05957,2.075855 -1.36035,3.110352 -0.29623,1.029954 -0.44434,2.069016 -0.44433,3.117187 -10e-6,1.043623 0.1481,2.082685 0.44433,3.117188 0.30078,1.034505 0.75423,2.075845 1.36035,3.124023 l -1.09375,0 c -0.68815,-1.084636 -1.20085,-2.139648 -1.53808,-3.165039 -0.33724,-1.029946 -0.50586,-2.055335 -0.50586,-3.076172 0,-1.01627 0.16862,-2.039381 0.50586,-3.069336 0.33723,-1.029939 0.84993,-2.082672 1.53808,-3.158203 l 1.09375,0"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4168"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 324.72363,57.873047 c 0,-0.250646 0.0866,-0.467117 0.25977,-0.649414 0.17773,-0.182286 0.38964,-0.273432 0.63574,-0.273438 0.2552,6e-6 0.47395,0.09115 0.65625,0.273438 0.18229,0.182297 0.27343,0.398768 0.27344,0.649414 -1e-5,0.255213 -0.0912,0.471684 -0.27344,0.649414 -0.17774,0.177739 -0.39649,0.266606 -0.65625,0.266601 -0.25521,5e-6 -0.4694,-0.08658 -0.64258,-0.259765 -0.16862,-0.173173 -0.25293,-0.391922 -0.25293,-0.65625 m 0.90918,-4.169922 c -0.64258,9e-6 -1.12337,0.346363 -1.44238,1.039062 -0.31446,0.692716 -0.47168,1.747728 -0.47168,3.16504 0,1.412764 0.15722,2.465497 0.47168,3.158203 0.31901,0.692709 0.7998,1.039063 1.44238,1.039062 0.64713,10e-7 1.12793,-0.346353 1.44239,-1.039062 0.319,-0.692706 0.4785,-1.745439 0.47851,-3.158203 -1e-5,-1.417312 -0.15951,-2.472324 -0.47851,-3.16504 -0.31446,-0.692699 -0.79526,-1.039053 -1.44239,-1.039062 m 0,-1.09375 c 1.08919,1e-5 1.91178,0.446625 2.46778,1.339844 0.56054,0.893237 0.84081,2.212572 0.84082,3.958008 -1e-5,1.740888 -0.28028,3.057944 -0.84082,3.951171 -0.556,0.89323 -1.37859,1.339844 -2.46778,1.339844 -1.08919,0 -1.91178,-0.446614 -2.46777,-1.339844 -0.55599,-0.893227 -0.83399,-2.210283 -0.83399,-3.951171 0,-1.745436 0.278,-3.064771 0.83399,-3.958008 0.55599,-0.893219 1.37858,-1.339834 2.46777,-1.339844"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4170"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 333.27539,60.928711 1.72266,0 0,1.415039 -1.34668,2.618164 -1.05274,0 0.67676,-2.618164 0,-1.415039"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4172"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 349.98926,57.873047 c -10e-6,-0.250646 0.0866,-0.467117 0.25976,-0.649414 0.17773,-0.182286 0.38965,-0.273432 0.63575,-0.273438 0.2552,6e-6 0.47395,0.09115 0.65625,0.273438 0.18228,0.182297 0.27343,0.398768 0.27343,0.649414 0,0.255213 -0.0912,0.471684 -0.27343,0.649414 -0.17774,0.177739 -0.39649,0.266606 -0.65625,0.266601 -0.25522,5e-6 -0.46941,-0.08658 -0.64258,-0.259765 -0.16863,-0.173173 -0.25294,-0.391922 -0.25293,-0.65625 m 0.90918,-4.169922 c -0.64258,9e-6 -1.12338,0.346363 -1.44239,1.039062 -0.31445,0.692716 -0.47168,1.747728 -0.47168,3.16504 0,1.412764 0.15723,2.465497 0.47168,3.158203 0.31901,0.692709 0.79981,1.039063 1.44239,1.039062 0.64713,10e-7 1.12792,-0.346353 1.44238,-1.039062 0.319,-0.692706 0.47851,-1.745439 0.47852,-3.158203 -1e-5,-1.417312 -0.15952,-2.472324 -0.47852,-3.16504 -0.31446,-0.692699 -0.79525,-1.039053 -1.44238,-1.039062 m 0,-1.09375 c 1.08918,1e-5 1.91178,0.446625 2.46777,1.339844 0.56054,0.893237 0.84081,2.212572 0.84082,3.958008 -10e-6,1.740888 -0.28028,3.057944 -0.84082,3.951171 -0.55599,0.89323 -1.37859,1.339844 -2.46777,1.339844 -1.0892,0 -1.91179,-0.446614 -2.46778,-1.339844 -0.55599,-0.893227 -0.83398,-2.210283 -0.83398,-3.951171 0,-1.745436 0.27799,-3.064771 0.83398,-3.958008 0.55599,-0.893219 1.37858,-1.339834 2.46778,-1.339844"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4174"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 358.54102,60.928711 1.72265,0 0,1.415039 -1.34668,2.618164 -1.05273,0 0.67676,-2.618164 0,-1.415039"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4176"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 375.25488,57.873047 c 0,-0.250646 0.0866,-0.467117 0.25977,-0.649414 0.17773,-0.182286 0.38964,-0.273432 0.63574,-0.273438 0.2552,6e-6 0.47395,0.09115 0.65625,0.273438 0.18229,0.182297 0.27343,0.398768 0.27344,0.649414 -1e-5,0.255213 -0.0912,0.471684 -0.27344,0.649414 -0.17774,0.177739 -0.39649,0.266606 -0.65625,0.266601 -0.25521,5e-6 -0.4694,-0.08658 -0.64258,-0.259765 -0.16862,-0.173173 -0.25293,-0.391922 -0.25293,-0.65625 m 0.90918,-4.169922 c -0.64258,9e-6 -1.12337,0.346363 -1.44238,1.039062 -0.31446,0.692716 -0.47168,1.747728 -0.47168,3.16504 0,1.412764 0.15722,2.465497 0.47168,3.158203 0.31901,0.692709 0.7998,1.039063 1.44238,1.039062 0.64713,10e-7 1.12793,-0.346353 1.44239,-1.039062 0.319,-0.692706 0.4785,-1.745439 0.47851,-3.158203 -1e-5,-1.417312 -0.15951,-2.472324 -0.47851,-3.16504 -0.31446,-0.692699 -0.79526,-1.039053 -1.44239,-1.039062 m 0,-1.09375 c 1.08919,1e-5 1.91178,0.446625 2.46778,1.339844 0.56054,0.893237 0.84081,2.212572 0.84082,3.958008 -1e-5,1.740888 -0.28028,3.057944 -0.84082,3.951171 -0.556,0.89323 -1.37859,1.339844 -2.46778,1.339844 -1.08919,0 -1.91178,-0.446614 -2.46777,-1.339844 -0.55599,-0.893227 -0.83399,-2.210283 -0.83399,-3.951171 0,-1.745436 0.278,-3.064771 0.83399,-3.958008 0.55599,-0.893219 1.37858,-1.339834 2.46777,-1.339844"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4178"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 382.75391,52.376953 1.09375,0 c 0.68814,1.075531 1.20084,2.128264 1.53808,3.158203 0.33724,1.029955 0.50586,2.053066 0.50586,3.069336 0,1.025394 -0.16862,2.053062 -0.50586,3.083008 -0.33724,1.029948 -0.84994,2.082682 -1.53808,3.158203 l -1.09375,0 c 0.60611,-1.057292 1.05728,-2.10319 1.35351,-3.137695 0.30078,-1.034503 0.45117,-2.069007 0.45117,-3.103516 0,-1.039057 -0.15039,-2.07584 -0.45117,-3.110351 -0.29623,-1.034497 -0.7474,-2.073559 -1.35351,-3.117188"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4180"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+     id="text21"
+     transform="translate(-231.6764,-3.7939453)">
+    <path
+       d="m 470.58789,51.793945 1.4834,0 2.24219,3.848633 2.2832,-3.848633 1.4834,0 -3.05567,4.798828 3.27442,5.407227 -1.4834,0 -2.50195,-4.395508 -2.7002,4.395508 -1.49023,0 3.41797,-5.407227 -2.95313,-4.798828"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4143"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+     id="text23"
+     transform="translate(-231.6764,-3.7939453)">
+    <path
+       d="m 285.25293,224.79395 1.46973,0 2.48828,4.50488 2.48144,-4.50488 1.4834,0 -3.27441,5.62597 0,4.58008 -1.3877,0 0,-4.58008 -3.26074,-5.62597"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4140"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+     id="text25"
+     transform="translate(-231.6764,-3.7939453)">
+    <path
+       d="m 246.2168,4.7939453 6.62402,0 0,1.0527344 -5.33203,7.9912113 5.48242,0 0,1.162109 -6.9248,0 0,-1.052734 5.18847,-7.9912113 -5.03808,0 0,-1.1621094"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Monospace;-inkscape-font-specification:Monospace"
+       id="path4146"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
+<figcaption>The origin of a three-dimensional coordinate system.</figcaption>
+</figure>
+<!-- END SVG -->
+
+<p>When our drawing surface is a document viewport, the x-axis is horizontal, the y-axis is vertical, and the z-axis sits perpendicular to the screen. This is known as the <em>global</em> coordinate system and (0,0,0) is the top-left corner of the viewport. When we apply a transform to an object using the <code>transform</code> property, we also a create <strong>local coordinate system</strong> for the object. Within this local coordinate system, the origin lies at the <em>center of the object</em> by default (50%, 50%, 0) and the screen plane is the z plane. We'll return to these concepts throughout this article.</p>  
+
+<h3 id="perspectiveprop">The <code>perspective</code> property</h3>
+
+<p>Again, when we apply a transform, our drawing surface becomes a containing block. This can be the <code>body</code> element, a <code>div</code> element, or any other block-level element. Consider the following HTML and CSS.</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;3D Transforms&lt;/title&gt;
+    &lt;style type="text/css"&gt;
+    #stage{
+        perspective: 500px;
+    }
+    .facet{
+        transform: rotate3d(-10,0,0,-45deg);
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="stage"&gt;
+        &lt;div class="facet"&gt;1&lt;/div&gt;
+        &lt;div class="facet"&gt;2&lt;/div&gt;
+        &lt;div class="facet"&gt;3&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<pre><code>
+</code></pre>
+
+<p class="note"><b>Note:</b> Here we are using un-prefixed versions of these properties. Some browsers and browser versions still require a prefix.</p>
+
+
+
+<p>You've probably noticed that we applied our <code>perspective</code> property to <code>#stage</code> rather than to its child elements. That's because <code>perspective</code> sets the stage, so to speak, for the transforms applied to its children (<a href="#perspective1">Figure XXX</a>). Without the <code>perspective</code> property, your transforms may appear flat and two-dimensional (<a href="3d-transforms-perspective.html">view a demo</a>).</p>
+</p>
+
+<figure id="perspective1">
+<img src="3d-transforms-perspective.png" alt="An example of transformed elements in 3D.">
+<figcaption>Figure XXX: An example of a 3D rotation transform with the <code>perspective</code> property applied.</figcaption>
+</figure>
+
+<p>The <code>perspective</code> property sets the perceived distance between the viewer and the objects we&#8217;re transforming. Its value must be either <code>none</code>, or a positive length such as 300, 500px or 10rem. Lower values increase the amount of foreshortening while higher values decrease it (<a href="3d-transforms-perspective-change.html">view a demo</a>).</p>
+
+<p>Setting the value of the <code>perspective</code> property to something other than <code>none</code> creates a <strong>containing block</strong>: absolutely-positioned child elements will be offset relative to the transformed object, rather than the document root. The effect is similar to that of <code>position: relative</code> (<a href="3d-transforms-containing.html">view a demo</a>). Setting a value for the <code>perspective</code> property also creates a <strong><a href="http://www.w3.org/TR/CSS2/zindex.html">stacking context</a></strong>. Transformed items may intersect with or overlap non-transformed objects on screen unless the z-index for each object is explicitly set.</p>
+
+<h3 id="perspectiveorigin">The <code>perspective-origin</code> property</h3>
+
+<p>If we use our drawing analogy, we can think of the <code>perspective-origin</code> property as the position of the vanishing point on our drawing surface. Some examples of the property and valid values follow.</p>
+
+<ul>
+	<li><code>perspective-origin: 50% 20%;</code></li>
+	<li><code>perspective-origin: 200em -800px;</code></li>
+	<li><code>perspective-origin: left center;</code></li>
+	<li><code>perspective-origin: right bottom;</code></li>
+</ul>
+
+<p>Unlike the <code>perspective</code> property, negative values are allowed. If two values are provided, and neither is a keyword, the first value is the horizontal or x-offset; the second value is the vertical or y-offset (<a href="3d-transforms-perspective-origin.html">view a demo</a>). Let's modify our CSS from above to add a perspective origin.</p>
+
+<pre><code>#stage{
+    perspective: 500px;
+    perspective-origin: 200% 1500px;
+}</code></pre>
+
+<p>As <a href="#perspectiveorigin">shown below</a>, this CSS creates the effect of looking at our child elements toward point that is 200% along the x-axis and 1500 pixels along the y-axis.</p>
+
+<figure id="perspectiveorigin">
+<img src="3d-transforms-perspective-origin.png">
+<figcaption>Figure XX: The parent element in this example has a style sheet of <code>perspective-origin: 200% 1500px</code> applied.</figcaption>
+</figure>
+
+<p>Like <code>perspective</code>, the <code>perspective-origin</code> property must be applied to the parent element. They are used to calculate the perspective matrix.</p>
+
+<p>It's also possible to affect perspective using the <a href="#perspectivefunction"><code>perspective()</code> transform function</a> on an element. We'll cover that later in the section on transform functions.</p>
+
+<h3 id="twosides">Two-sides to a transformed object: <code>backface-visibility</code> and <code>transform-style</code></h3>
+
+<p>In all of the examples above, we've looked at what amounts to a single plane. So what do we do when we want to mimic a playing card? This is where the <code>transform-style</code> and <code>backface-visibility</code> properties come into play.</p>
+
+<p>Think about a playing card. It has two sides, one of which you can see at any given time and one you can't see. That's unlike the planes we've been working with so far. Let's look at the markup we might use to create a playing card.</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;3D Transforms: A playing card&lt;/title&gt;
+    &lt;link rel="stylesheet" type="text/css" href="s.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="deck"&gt;
+        &lt;div class="card"&gt;
+           &lt;div class="back"&gt;&amp;nbsp;&lt;/div&gt;
+           &lt;div class="front"&gt;A&amp;#9824;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Here we have our main container <code>&lt;div id="deck"&gt;</code>, and our <em>card</em> container, <code>&lt;div class="card"&gt;</code>. Nested within our card container are the faces of the card, <code>&lt;div class="back"&gt;</code> and <code>&lt;div class="front"&gt;</code>.</p>
+
+<h4 id="transstyle">Setting a <code>transform-style</code></h4>
+
+<p>As with a drawing, three-dimensional transforms map three dimensions of coordinates into the two dimensions of a screen. By default, transformed objects behave as a single plane. However, we can mimic multi-sided objects by using the <code>transform-style</code> property. Valid values for the <code>transform-style</code> property are <code>flat</code> and <code>preserve-3d</code>. The default is <code>flat</code>.</p>
+
+<p>In <a href="#transformstyle">figure xxxx</a> below, we have two cards with the same markup and largely the same CSS. However, for the left card, the value of the <code>transform-style</code> property is <code>flat</code>. For the right card, the value is <code>preserve-3d</code>. If we flip them over, as <a href="3d-transforms-transform-style.html">in the demo</a>, the can see that the left card appears to be a flattened plane. We can, however, see the other side of the card on the right.</p>
+
+<figure id="transformstyle">
+<img src="3d-transforms-transstyle.png">
+<figcaption>Figure XXX: The card on the left has a <code>transform-style</code> of <code>flat</code> while the one on the right has a value of <code>preserve-3d</code>.</figcaption>
+</figure>
+
+<p>Using <code>transform-style: preserve-3d</code> also establishes a stacking context, but a few CSS properties and values can override its behavior. As required by their respective specifications, the following properties and values require the user agent to create a flattened representation of child elements before they can be applied.</p>
+
+<ul>
+	<li><code>overflow: hidden</code></li>
+	<li><code>overflow: scroll</code></li>
+	<li><code>opacity</code> when the value is other than <code>1</code></li>
+	<li><code>filter</code> when the value is other than <code>none</code> </li>
+</ul>
+
+<h4 id="backfacevisibility">Showing or hiding a side with <code>backface-visibility</code></h4>
+
+<p>As mentioned above, at any given time, a real playing card has a side you can see and a side you can't. The side you can't see is known as its <em>back face.</em> With 3D transforms, we can control the visibility of this back face using the <code>backface-visibility</code>  property. Valid values are <code>visible</code> and <code>hidden</code>. By default, back faces are visible.</p>
+
+<figure id="backfacevis">
+<img src="3d-transforms-backface.png">
+<figcaption>Figure XXX: The card on the left has a <code>backface-visibility</code> of <code>visible</code> while the one on the right has a value of <code>hidden</code>.</figcaption>
+</figure>
+
+<p>In the figure above, the pattern for both cards uses translucent colors. The only difference between the two is that card on the left has a <code>backface-visibility</code> value of <code>visible</code>, while the card on the right has a <code>backface-visibility</code> value of <code>hidden</code> (<a href="3d-transforms-backface.html">view the <code>backface-visibility</code> demo</a>).</p> 
+
+<h2 id="transformfuncs">The transform functions</h2>
+
+<p>As with 2D transforms, 3D transforms are set using the <code>transform</code> property. Its value must be one or more functions and their arguments. Some examples follow.</p>
+
+<ul>
+	<li><code>transform: rotate3d(0,100,40,15deg)</code></li>
+	<li><code>transform: translateZ(-200px) scale3d(2,.5,9) rotateZ(-45deg)</code></li>
+    <li><code>transform: perspective(200px) rotate3d(-82,100,40,0.785rad);</code></li>
+</ul>
+
+<p>Two dimensional transforms allow developers to manipulate an object along the x and y axes or planes. Three dimensional transforms add the ability to manipulate objects along the z axis (or in the z direction). Let's look at these functions one by one.</p>
+
+<h3 id="perspectivefunction"><code>perspective()</code></h3>
+
+<p>The <code>perspective()</code> function represents the distance of the z-plane (z = 0) from the viewer. Its argument must be a length such as pixels or ems, and a value greater than zero. Using it causes points to be scaled in the X and Y directions based on their Z values (<a href="#perspectivefunc">Figure XXXX</a>). Lower values create a more exaggerated perspective effect. Higher values do the opposite.</p>
+
+<figure id="perspectivefunc">
+<img src="3d-transforms-perspective-func.png">
+<figcaption>Figure XXXX: The second figure has a <code>transform: perspective(200px) rotate3d(20,10,0,-45deg)</code> style applied.</figcaption>
+</figure>
+
+<div class="note">
+<p class="note">WORK OUT A PERSPECTIVE DEMO?</p>
+
+<ul>
+	<li>Create a demo of two points intersecting... like half of a cube or something.</li>
+
+	<li>lower values create a greater amount of foreshortening than higher values.</li>
+</ul>
+</div>
+
+<p>By using the <code>perspective()</code> function, you're creating a <strong>perspective projection matrix</strong>. What's a matrix? Keep reading.</p>
+
+
+<h3 id="matrix3d">Matrices, vectors, and <code>matrix3d()</code></h3>
+
+<p>In mathematics, a <strong>matrix</strong> is a rectangle of values. An example of a 4-by-4 matrix is shown in <a href="#matrix">figure xxx</a>.</p>
+
+<figure id="matrix">
+<img src="3d-transforms-matrix.gif">
+<figcaption>Figure XXXXX: A 4-by-4 matrix.</figcaption>
+</figure>
+
+<p>Each transform function &#8212; <code>perspective()</code>, <code>rotate3d()</code>, and so on &#8212; can be <a href="http://www.w3.org/TR/css3-transforms/#mathematical-description">described mathematically</a> using a 4-by-4 matrix. The perspective projection matrix is <a href="#perspectiveprojection">shown below</a>. The <i>d</i> stands for <i>distance</i>.</p>
+
+<figure id="perspectiveprojection">
+<img src="3d-transforms-persp-matrix.gif">
+<figcaption>Figure XXXXX: The perspective projection matrix.</figcaption>
+</figure>
+
+<p><code>matrix3d()</code> is just a way to declare a 4-by-4 transform matrix using CSS. For two-dimensional transforms, you can use the <code>matrix()</code> or <code>matrix3d()</code> functions. Three-dimensional transforms must use the latter. The <code>matrix3d()</code> function accepts 16 arguments. Those arguments correspond to the matrix values <em>m11</em> through <i>m44</i>.</p>
+
+<p>Consider the <a href="#perspectiveprojection">perspective projection matrix</a> from above. If we apply a perspective transform of 200 pixels &#8212; <code>transform: perspective(200px)</code> &#8212; our distance or <i>d</i> value is 200. We can then divide -1 by 200 to arrive at -0.005. In other words, <code>transform: perspective(200px)</code> is the equivalent of <code>transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.005, 0, 0, 0, 1)</code>.</p>
+
+<p>To create a compound transform using <code>matrix3d()</code> you'll need to <a href="http://en.wikipedia.org/wiki/Matrix_multiplication">multiply the matrix</a> for each function, then plug the resulting values into the function. This is actually what the browser does when it encounters multiple transform functions in a style declaration. It multiplies the equivalent matrices, and applies the product. Let's try <code>transform: perspective(200px) scale3d(2,3,3)</code>. You may recognize the perspective matrix on the left. We will multiply it by the scaling matrix to find the matrix product  (<a href="#matrixmult">figure xxxxx</a>).</p>
+
+<figure id="matrixmult">
+<img src="3d-transforms-multiplied.gif">
+<figcaption>Figure XXXXX: Multiplying the perspective matrix (left) by the three-dimensional scaling matrix.</figcaption>
+</figure>
+
+<p>Our matrix product values are then used as arguments for the <code>matrix3d()</code> function. We could use <code>transform: matrix3d(2, 0, 0, 0,  0, 3, 0, 0,  0, 0, 3, -0.015, 0, 0, 0, 1)</code> instead of <code>transform: scale3d(2,3,3) perspective(200px)</code>. <a href="http://dev.opera.com/articles/view/understanding-the-css-transforms-matrix/">Understanding the CSS Transforms Matrix</a> covers this in a bit more depth.</p>
+
+<p>It's probably a good time to mention that <strong>order matters</strong> when dealing with transform functions: <code>transform: perspective(200px) scale3d(2,3,3)</code> renders slightly differently than <code>transform: scale3d(2,3,3) perspective(200px)</code>. Why? Because matrices, when multiplied, are not <a href="http://en.wikipedia.org/wiki/Commutative">commutative</a>. Changing the order of the matrices results in a different matrix product, and therefore a different transform.</p>
+
+<p>Since using <code>matrix3d()</code> can make your CSS more obtuse than necessary, it's best to stick to the transform functions. I'll assume you're already familiar with two-dimensional transforms. For the rest of this article, we'll focus exclusively on 3D transform functions. if you need a primer on 2D transforms, read <a href="http://dev.opera.com/articles/view/css3-transitions-and-2d-transforms/">CSS3 transitions and 2D transforms</a>, our previous article on the subject.</p>
+
+<h3 id="translating">Translating objects with <code>translateZ()</code> and <code>translate3d()</code></h3>
+
+<p>Translation transforms offset the rendering position of an object by the distance provided. You may already be familiar with the <code>translateX()</code>, <code>translateY()</code>, and <code>translate()</code> functions. These functions translate objects along the x-axis, y-axis, or both in the case of <code>translate()</code>. With 3D transforms, we now have two more translation functions at our disposal: <strong><code>translateZ()</code></strong> and <strong><code>translate3d()</code></strong>.</p>
+
+<p>As its name suggests, <strong><code>translateZ()</code></strong> causes an object to be offset by the specified distance along the z-axis. The z-axis, of course, is an imaginary line that sits perpendicular to the plane of the screen (<a href="#origin">figure XXX</a>). Translating along the z-axis affects the perception of distance (<a href="3d-transforms-transZ.html">view the demo</a>). Positive lengths appear closer to the viewer (and larger). Negative lengths appear to be farther away (and smaller).</p>
+
+<p>The <strong><code>translate3d()</code></strong> function works similarly, but accepts three arguments: an x-offset, a y-offset, and a z-offset value. It's a more succinct way to translate an object along all three axes. A transform value of <code>translate3d(200px,300px,-400px)</code>, for example, is the equivalent of <code>transform: translateX(200px) translateY(300px) translateZ(-400px)</code>.
+
+<h3 id="scaling" class="note">Scaling objects with scale3d() and scaleZ()</h3>
+
+
+<h3 id="rotate">Rotating objects with <code>rotateX()</code>, <code>rotateY()</code> and <code>rotateZ()</code> and <code>rotate3d()</code></h3>
+
+<p>As these function names suggest, <code>rotateX()</code>, <code>rotateY()</code> and <code>rotateZ()</code> rotate an object around the x, y or z axis. Rotations using <code>rotateX()</code> spin around a horizontal axis (<a href="#rotatex">figure xxx</a>), while those using <code>rotateY()</code> spin around a vertical axis.</p>
+
+<figure id="rotatex">
+<img src="3d-transforms-rotateX.png">
+<figcaption>Figure XXX: Using <code>rotateX()</code> to tilt objects.</figcaption>
+</figure>
+
+<p>The z-axis sits perpendicular to the screen plane. Rotations using <code>rotateZ()</code> are like those of a pinwheel or the hands of an analog clock (<a href="#rotatez">figure XXXXX</a>).  It behaves exactly like the 2D <code>rotate()</code> transform function. In effect, they are aliases. If you are only rotating around the z-axis, <code>rotate()</code> offers the broadest compatibility with older browsers. You can see how each of these functions work in this <a href="3d-transforms-rotateXYZ.html">rotation demo</a>.</p>
+
+<figure id="rotatez">
+<img src="3d-transforms-rotateZ.png">
+<figcaption>Figure XXX: Using <code>rotateZ()</code> to tilt objects.</figcaption>
+</figure>
+
+<p>Each of these functions accepts a CSS angle as an argument. Valid values may be degrees (ex: 45deg), radians (ex: .21rad), gradians (ex: 100grad), or turns (.25turn). Units are defined in the <a href="http://www.w3.org/TR/css3-values/#angles">angles section</a> of the CSS Values and Units Module Level 3 specification.</p>
+
+<p><mark><code>rotate3d()</code> is a bit more complicated.</mark> It accepts four parameters: three numbers and an angle. The first, second, and third parameters form an [x,y,z] direction vector. And the fourth parameter determines the angle of rotation around that vector.</p>
+
+  
+
+
+</html>

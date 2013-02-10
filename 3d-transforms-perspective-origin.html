@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>3D CSS Transforms: perspective-origin</title>
+	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+</head>
+<body>
+     <header>
+        <h1>3D CSS Transforms: <code>perspective-origin</code></h1>
+    </header>
+
+   <form id="persporiginrange">
+        <fieldset><legend>perspective-origin:</legend>
+        <p class="nowrap"><label for="perspectiveX">X</label><input type="range" id="perspectiveX" value="0" min="-2000" max="2000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <label for="perspectiveY">Y</label><input type="range" id="perspectiveY" value="0" min="-2000" max="2000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+        </fieldset>
+        <button type="reset">Reset</button>
+    </form>
+
+
+    <div id="stage" class="perspective">
+        <div class="facet">1</div>
+        <div class="facet">2</div>
+        <div class="facet">3</div>
+    </div>
+
+<script type="application/javascript" src="3d-transforms.js"></script>
+
+</body>
+</html>
