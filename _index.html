@@ -480,11 +480,25 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 <figcaption>Figure XXX: Using <code>rotateZ()</code> to tilt objects.</figcaption>
 </figure>
 
-<p>Each of these functions accepts a CSS angle as an argument. Valid values may be degrees (ex: 45deg), radians (ex: .21rad), gradians (ex: 100grad), or turns (.25turn). Units are defined in the <a href="http://www.w3.org/TR/css3-values/#angles">angles section</a> of the CSS Values and Units Module Level 3 specification.</p>
+<p>Each of these functions accepts a CSS angle as an argument. Valid values may be degrees (ex: <code>45deg</code>), radians (ex: <code>.21rad</code>), gradians (ex: <code>100grad</code>), or turns (<code>.25turn</code>). Units are defined in the <a href="http://www.w3.org/TR/css3-values/#angles">angles section</a> of the CSS Values and Units Module Level 3 specification.</p>
 
-<p><mark><code>rotate3d()</code> is a bit more complicated.</mark> It accepts four parameters: three numbers and an angle. The first, second, and third parameters form an [x,y,z] direction vector. And the fourth parameter determines the angle of rotation around that vector.</p>
+<p><code>rotate3d()</code> is a bit more complicated. It accepts four parameters. The first three values must be numbers. They form an [x,y,z] direction vector. The fourth parameter determines the angle of rotation in each direction specified by the vector. Again: angles may be degrees, radians, grandians, or turns.</p>
 
-  
+<figure id="rotate3d">
+<img src="3d-transforms-rotate3d.png">
+<figcaption>Figure XXX: Rotating around two axes using  <code>rotate3d(1,1,0,45deg)</code>.</figcaption>
+</figure>
+
+<p>In the image above, we've tilted these objects by 45 degrees along both the x and y axes. This is actually the equivalent of <code>transform: rotateX(45deg) rotateY(45deg)</code>. Similarly, <code>rotate3d(0,0,1,45deg)</code> is equivalent to <code>rotateZ(45eg)</code> and <code>rotate(45deg)</code>. Of course, adjusting the x, y, or z value adjusts the rotation along the axis. However, the relationship between the values isn't as straightforward as you would think.</p>
+
+<p>When the x, y, and z values are the same &#8212; say <code>rotate3d(22,22,22,45deg)</code>  &#8212; the effect is about what you'd get if each value were 1 (<code>rotate3d(1,1,1,45deg)</code>). It has to do with the way the <a href="http://www.w3.org/TR/css3-transforms/#Rotate3dDefined"><code>rotate3d</code> matrix</a>, is calculated. Plug in the same values for x, y, and z, and it results in virtually the same matrix, give or take a decimal place.</p>
+
+<p>Should you change one (or two) of those values, however, it results in a different matrix. For example, <code>rotate3d(1,100,1,45deg)</code> rotates the object more severely around the y axis than around either the x or z axes. By <a href="3d-transforms-rotate3d.html">manipulating</a> each value, you can get a sense of how they interplay.
+
+
+
+
+
 
 
 </html>
