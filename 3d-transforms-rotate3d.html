@@ -89,8 +89,6 @@ var updatecss = function(e){
 		
 		newrule += rotate3d += val.join(',') + ');}';
 	}
-	
-	console.log( newrule );
 		
 	css.insertRule(newrule,0); // Insert at the top of the rule stack.
 	css.deleteRule(1);         // Delete what is now the second rule.

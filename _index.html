@@ -489,14 +489,11 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 <figcaption>Figure XXX: Rotating around two axes using  <code>rotate3d(1,1,0,45deg)</code>.</figcaption>
 </figure>
 
-<p>In the image above, we've tilted these objects by 45 degrees along both the x and y axes. This is actually the equivalent of <code>transform: rotateX(45deg) rotateY(45deg)</code>. Similarly, <code>rotate3d(0,0,1,45deg)</code> is equivalent to <code>rotateZ(45eg)</code> and <code>rotate(45deg)</code>. Of course, adjusting the x, y, or z value adjusts the rotation along the axis. However, the relationship between the values isn't as straightforward as you would think.</p>
+<p>In the image above, we've tilted these objects by 45 degrees along both the x and y axes. This is actually the equivalent of <code>transform: rotateX(45deg) rotateY(45deg)</code>. Similarly, <code>rotate3d(0,0,1,45deg)</code> is equivalent to <code>rotateZ(45deg)</code> and <code>rotate(45deg)</code>. Of course, adjusting the x, y, or z value adjusts the rotation along that axis. Numbers may be positive or negative, but keep in mind that larger numbers do not necessarily create a more exaggerated rotation.</p>
 
-<p>When the x, y, and z values are the same &#8212; say <code>rotate3d(22,22,22,45deg)</code>  &#8212; the effect is about what you'd get if each value were 1 (<code>rotate3d(1,1,1,45deg)</code>). It has to do with the way the <a href="http://www.w3.org/TR/css3-transforms/#Rotate3dDefined"><code>rotate3d</code> matrix</a>, is calculated. Plug in the same values for x, y, and z, and it results in virtually the same matrix, give or take a decimal place.</p>
+<p> For example, <code>rotate3d(1,100,1,45deg)</code> rotates the object more severely around the y axis than around either the x or z axes. But increasing the y value to 1000 won't create a significantly more severe rotation than a value of 100. In a similar vein, whenever the x, y, and z values are the same the effect is about what you'd get if each value were 1. Using <code>rotate3d(22,22,22,45deg)</code> or  <code>rotate3d(198,198,198,45deg)</code> produces the same visual effect as <code>rotate3d(1,1,1,45deg)</code>.</p>
 
-<p>Should you change one (or two) of those values, however, it results in a different matrix. For example, <code>rotate3d(1,100,1,45deg)</code> rotates the object more severely around the y axis than around either the x or z axes. By <a href="3d-transforms-rotate3d.html">manipulating</a> each value, you can get a sense of how they interplay.</p>
-
-
-
+<p>Both cases have to do with the way the <a href="http://www.w3.org/TR/css3-transforms/#Rotate3dDefined"><code>rotate3d</code> matrix</a>, is calculated. Using the same number for the x, y, and z, values results in virtually the same matrix regardless of what that number is. Should you change one (or two) of those values, however, it results in a different matrix. By <a href="3d-transforms-rotate3d.html">manipulating</a> each value, you can get a sense of how they interplay.</p>
 
 
 
