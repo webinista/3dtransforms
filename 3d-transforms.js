@@ -14,7 +14,7 @@ if( toggle ){
     }, false);
 }
 
-/* if( persprange ){
+if( persprange ){
     persprange.addEventListener('submit',function(e){ e.preventDefault(); },false);
     persprange.addEventListener('change', function(e){
         e.preventDefault();
@@ -28,32 +28,7 @@ if( toggle ){
 
         e.target.nextElementSibling.innerHTML = e.target.value+'px';
     }, false);
-} */
-
-if( persporigin ){
-    persporigin.addEventListener('submit',function(e){ e.preventDefault(); },false);
-    persporigin.addEventListener('change', function(e){
-        e.preventDefault();
-        var stage = document.getElementById('stage'),
-            px = document.getElementById('perspectiveX'),
-            py = document.getElementById('perspectiveY');
-
-            stage.style.webkitPerspectiveOrigin = px.value+'px '+py.value+'px';
-            stage.style.mozPerspectiveOrigin    = px.value+'px '+py.value+'px';
-            stage.style.msPerspectiveOrigin     = px.value+'px '+py.value+'px';
-            stage.style.perspectiveOrigin       = px.value+'px '+py.value+'px';
-
-            e.target.nextElementSibling.innerHTML = e.target.value+'px';
-    }, false);
-    persporigin.addEventListener('reset',function(e){
-        var px = document.getElementById('perspectiveX'),
-            py = document.getElementById('perspectiveY');
-
-            px.nextElementSibling.innerHTML = py.nextElementSibling.innerHTML = '';
-            stage.removeAttribute('style');
-
-    },false);
-}
+} 
 
 if(flipcards){
     flipcards.addEventListener('submit', function(e){
