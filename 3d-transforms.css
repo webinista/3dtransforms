@@ -4,7 +4,7 @@ body{
 h1{
     margin:0;
 }
-header,form{
+header, form{
     background: rgba(255,255,255,.95);
     position:relative;
     z-index:100;

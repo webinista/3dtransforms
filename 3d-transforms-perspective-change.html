@@ -5,6 +5,16 @@
 	<title>3D CSS Transforms: Changing Perspective</title>
 	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
 	<style>
+	#stage{
+		-webkit-perspective: 500px; 
+		   -moz-perspective: 500px; 
+		    -ms-perspective: 500px; 
+		        perspective: 500px;
+	}
+	form{
+		z-index:9999;
+	}
+	
 	div{
 	    background: #eee;
 	    margin: 1rem;
@@ -15,6 +25,13 @@
     label{
         font-family: monospace;
     }
+    .facet, .plane{
+		-webkit-transform: rotate3d(-10,0,0,-60deg);
+		   -moz-transform: rotate3d(-10,0,0,-45deg);
+			-ms-transform: rotate3d(-10,0,0,-45deg);
+				transform: rotate3d(-10,0,0,-45deg);
+	}
+
 	</style>
 </head>
 <body>
@@ -24,16 +41,59 @@
     </header>
 
     <form id="persprange">
-        <p><label for="perspective">perspective:</label> <input type="range" id="perspective" value="1500" min="1" max="3000"><span></span></p>
+        <p><label for="perspective">perspective:</label> 
+        <input type="range" id="perspective" value="500" min="1" max="1500"><span id="startval" data-start="500"></span>px</p>
+        <p><button type="reset">Reset</button></p>
     </form>
 
-    <div id="stage" style="-webkit-perspective: 500px; -moz-perspective: 500px; -ms-perspective: 500px; perspective: 500px;">
+    <div id="stage">
         <div class="facet">1</div>
         <div class="facet">2</div>
         <div class="facet">3</div>
     </div>
 
 <script type="application/javascript" src="3d-transforms.js"></script>
+
+<script type="application/javascript">
+(function(){
+	var f = document.forms[0], 
+		css = document.styleSheets[1]; // grabs internal style sheet
+	f.addEventListener('submit',function(e){ e.preventDefault(); },false);
+	f.addEventListener('reset',function(e){ 
+		var startval = document.getElementById('startval'), 
+			val = startval.getAttribute('data-start'),
+			newrule = css.cssRules[0].cssText.split(':')[0];
+	
+		newrule += ': '+val+'px; }';
+	 
+		startval.innerHTML = val;
+		css.insertRule(newrule,0);
+		css.deleteRule(1); 
+
+	},false);
+	f.addEventListener('change', function(e){
+		e.preventDefault();
+		var c = css, 
+			persp = c.cssRules[0].cssText.split(':'), // grabs first rule in that sheet & splits it.
+			perspective = f['perspective'].value, // grabs the range
+			newrule = persp[0],
+			startval = document.getElementById('startval');
+		
+		newrule += ': '+perspective+'px; }';
+		startval.innerHTML = +(perspective);
+	
+		c.insertRule(newrule,0); // Insert at the top of the rule stack.
+		c.deleteRule(1);         // Delete what is now the second rule.
+
+	}, false);
+
+	window.addEventListener('DOMContentLoaded', function(e){
+		var startval = document.getElementById('startval');
+		startval.innerHTML = startval.getAttribute('data-start');
+	},false);
+})();
+</script>
+
 
 </body>
 </html>
