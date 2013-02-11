@@ -79,10 +79,15 @@
 			newrule = persp[0],
 			startval = document.getElementById('startval');
 		
-		newrule += ': '+perspective+'px; }';
+		persp[1] = ': ';
+		persp[2] = perspective;
+		persp[3] = 'px; }';
+		
+		newrule = persp.join('')
+		
 		startval.innerHTML = +(perspective);
 	
-		c.insertRule(newrule,0); // Insert at the top of the rule stack.
+		c.insertRule(newrule ,0); // Insert at the top of the rule stack.
 		c.deleteRule(1);         // Delete what is now the second rule.
 
 	}, false);
