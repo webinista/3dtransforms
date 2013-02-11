@@ -10,6 +10,7 @@ header,form{
     z-index:100;
     margin:1rem;
 }
+
 #stage{
     background: rgba(200,200,200,.3);
     margin:0rem auto;
@@ -24,10 +25,6 @@ header,form{
     color: #fff;
     width: 80%;
     text-align: center;
-    -webkit-transform: rotate3d(-10,0,0,-45deg);
-       -moz-transform: rotate3d(-10,0,0,-45deg);
-        -ms-transform: rotate3d(-10,0,0,-45deg);
-            transform: rotate3d(-10,0,0,-45deg);
 }
 
 .facet:first-child, .plane:first-child{
@@ -40,7 +37,7 @@ header,form{
     background: rgba(0,0,255,.7);
 }
 
-.perspective, #rotate #stage{
+.perspective{
     -webkit-perspective: 500px;
        -moz-perspective: 500px;
         -ms-perspective: 500px;
@@ -52,180 +49,12 @@ input[type=range]{
     vertical-align: middle;
     display:inline-block;
 }
+
 label{
     margin-left: 5%;
     display:inline-block;
 }
 
-#containing .facet{
-    position: absolute;
-    left:10%;
-    z-index: 100;
-}
-
-#containing .facet:first-child{
-    top:-30px;
-}
-
-#containing .facet:nth-child(2){
-    top:40px;
-}
-
-#containing .facet:nth-child(3){
-    top:120px;
-}
-
-form span{font-family: monospace;}
-
-.nowrap{
-    white-space: nowrap;
-}
-
-/*--------------------
-Creating playing cards
-----------------------*/
-
-#deck{
-	-webkit-perspective: 2000px;
- 	   -moz-perspective: 2000px;
-        -ms-perspective: 2000px;
-            perspective: 2000px;
-}
-
-.spades{color:#000;}
-.hearts{color:#c00;}
-.card{
-    height: 20rem;
-    border-radius: 5px;
-    border: 10px solid #fff;
-    box-shadow: 0px 1px 10px #333;
-    margin: 1rem;
-    float: left;
-    width: 13.3rem;
-    position: relative;
-	-webkit-transition: -webkit-transform 5s ease-in-out;
-       -moz-transition:    -moz-transform 5s ease-in-out;
-        -ms-transition:     -ms-transform 5s ease-in-out;
-            transition:         transform 5s ease-in-out;
-}
-
-.front, .back{
-    margin: 0;
-    position:absolute;
-    top: 0;
-    left: 0;
-}
-
-.front{
-    text-align:center;
-    font-size: 7rem;
-    background: rgba(255,255,255,.5);
-    padding: 30% 1rem;
-    width:11.3rem;
-    height:60%;
-	-webkit-transform: rotate3d(0,100,0,180deg);
-       -moz-transform: rotate3d(0,100,0,180deg);
-        -ms-transform: rotate3d(0,100,0,180deg);
-            transform: rotate3d(0,100,0,180deg);
-}
-
-.back{
-    text-align: center;
-    font-size: 7rem;
-    height: inherit;
-    width: inherit;
-}
-
-.flipped .card{
-    -webkit-transform: rotate3d(0,200,0,-180deg);
-       -moz-transform: rotate3d(0,200,0,-180deg);
-        -ms-transform: rotate3d(0,200,0,-180deg);
-            transform: rotate3d(0,200,0,-180deg);
-}
-
-#transformstyle .card:first-child{
-	-webkit-transform-style: flat;
-       -moz-transform-style: flat;
-        -ms-transform-style: flat;
-            transform-style: flat;
-    /*
-    Because the transform-style is flat,
-    no containing block is created. We
-    need to create it with relative
-    positioning.
-    */
-    position:relative;
-}
-
-#transformstyle .card:nth-child(2){
-	-webkit-transform-style: preserve-3d;
-       -moz-transform-style: preserve-3d;
-        -ms-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-}
-
-#transformstyle .front, #transformstyle .back{
-    -webkit-backface-visibility: hidden;
-       -moz-backface-visibility: hidden;
-        -ms-backface-visibility: hidden;
-	        backface-visibility: hidden;
-}
-
-#transformstyle .back, #twosided .back{
-    background-color: rgba(34,85,136,1);
-}
-
-/*-------------------------*/
-#backfacevis .card{
-	-webkit-transform-style: preserve-3d;
-       -moz-transform-style: preserve-3d;
-        -ms-transform-style: preserve-3d;
-         -o-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-}
-
-#backfacevis .card:first-child .front,
-#backfacevis .card:first-child .back{
-    -webkit-backface-visibility: visible;
-       -moz-backface-visibility: visible;
-        -ms-backface-visibility: visible;
-         -o-backface-visibility: visible;
-	        backface-visibility: visible;
-}
-
-#backfacevis .card:nth-child(2) .front,
-#backfacevis .card:nth-child(2) .back{
-    -webkit-backface-visibility: hidden;
-       -moz-backface-visibility: hidden;
-        -ms-backface-visibility: hidden;
-         -o-backface-visibility: hidden;
-	        backface-visibility: hidden;
-}
-
-#backfacevis .back{
-    background-color: rgba(34,85,136,.5);
-   
-}
-
-
-/*-------------------------*/
-#changetranslate, #rxyz{font-family:monospace; background: rgba(255,255,255,.8); z-index:900}
-
-label{font-weight: bold;}
-
-/*-------------------------*/
-
-#rotate .facet{
-	-webkit-transform: rotate(0);
-	   -moz-transform: rotate(0);
-	    -ms-transform: rotate(0);
-}
-
-#rxyz p{ display:inline-block; white-space: nowrap;}
-
-/*==== rotate and translate ====*/
 input[type]{font:inherit;}
 label{font-family:monospace;}
 button{margin-top:20px; font:sans-serif; background-color:#03c; color:#fff;border:1px solid #03c}
-
-#rotate3 p{display:inline-block;}

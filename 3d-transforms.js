@@ -14,7 +14,7 @@ if( toggle ){
     }, false);
 }
 
-if( persprange ){
+/* if( persprange ){
     persprange.addEventListener('submit',function(e){ e.preventDefault(); },false);
     persprange.addEventListener('change', function(e){
         e.preventDefault();
@@ -28,7 +28,7 @@ if( persprange ){
 
         e.target.nextElementSibling.innerHTML = e.target.value+'px';
     }, false);
-}
+} */
 
 if( persporigin ){
     persporigin.addEventListener('submit',function(e){ e.preventDefault(); },false);
@@ -87,7 +87,7 @@ if(ct){
 		});	
 		update.innerHTML = '0';
 	},true);
-}
+} 
 
 if(rxyz){
 	rxyz.addEventListener('change', function(e){

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>3D CSS Transforms: scale3d()</title>
+	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+	<style type="text/css">
+	#stage{
+    -webkit-perspective: 500;
+       -moz-perspective: 500px;
+            perspective: 500px;
+   }
+ 	
+	.plane_s{
+		padding: 1rem;
+		margin: 1rem auto;
+		font-size: 4rem;
+		font-weight: bold;
+		color: #fff;
+		width: 500px;
+		text-align: center;
+		-webkit-backface-visibility: visible;
+	}
+
+	.plane_s:first-child{
+		background: rgba(255,102,255,.7);
+		
+	}
+	
+
+
+	</style>
+</head>
+<body>
+	 <!-- <header>
+        <h1>3D CSS Transforms: <code>rotate3d()</code></h1>
+        <p>Adjust the value below to understand the effect of <code id="r3d">rotate3d()</code>.</p>
+    </header>
+    
+ <form id="rotate3" action="#">
+    	<p>
+    	<label for="x">x</label>
+    	<input type="number" id="x" name="x" value="0" required>
+    	</p>
+    	
+    	<p>
+    	<label for="y">y</label>
+    	<input type="number" id="y" name="y" value="0" required>
+    	</p>
+    	
+    	<p>
+    	<label for="z">z</label>
+    	<input type="number" id="z" name="z" value="0" required>
+    	</p>
+
+    	<p><button type="submit">Update</button> <button type="reset">Reset</button></p>
+    	<br style="clear:both;">
+    </form> -->
+
+    <div id="stage">
+    	<div id="wrap">
+       	 	<div class="plane_s">1</div>
+       	 	<div class="plane_s">2</div>
+        	<div class="plane_s">3</div>
+        </div>
+    </div>
+
+<!-- <script type="application/javascript" src="3d-transforms.js"></script>
+<script>
+var form = document.forms[0];
+
+
+
+var updatecss = function(e){
+	e.preventDefault();
+	
+	var css = document.styleSheets[1],  // using the embedded style sheet.
+			inp = document.querySelectorAll('input'),
+			current = css.cssRules[0].cssText.split(':');
+	/*		val = [],
+			rotate3d = ': rotate3d(',
+			newrule = current[0];
+	
+	if(e.type == 'reset'){
+	
+		newrule += rotate3d; 
+		newrule += '0, 0, 0, 0deg); }';
+	
+	} else {
+	
+		// build new values
+		val[0] = +(inp[0].value);
+		val[1] = +(inp[1].value);
+		val[2] = +(inp[2].value);
+		newrule += rotate3d += val.join(',') + ');}';
+	}
+		
+	css.insertRule(newrule,0); // Insert at the top of the rule stack.
+	css.deleteRule(1);         // Delete what is now the second rule. */
+	
+	console.log( css.cssRules[0].cssText );
+	
+	
+}
+
+form.addEventListener('reset',updatecss,false);
+
+form.addEventListener('change',updatecss,false);
+
+form.addEventListener('submit',updatecss,false)
+</script> -->
+
+
+</body>
+</html>

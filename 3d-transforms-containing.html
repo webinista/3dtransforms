@@ -4,6 +4,36 @@
 	<meta charset="utf-8">
 	<title>3D CSS Transforms: Containing Block</title>
 	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+	<style type="text/css">
+
+	.perspective, #rotate #stage{
+		-webkit-perspective: 500px;
+		   -moz-perspective: 500px;
+			-ms-perspective: 500px;
+				perspective: 500px;
+	}
+
+
+	#containing .facet{
+		position: absolute;
+		left:10%;
+		z-index: 100;
+		margin:0
+	}
+
+	#containing .facet:first-child{
+		top:0px;
+	}
+
+	#containing .facet:nth-child(2){
+		top:4ex;
+	}
+
+	#containing .facet:nth-child(3){
+		top:8ex;
+	}
+	</style>
+
 </head>
 <body id="containing">
    <header>
