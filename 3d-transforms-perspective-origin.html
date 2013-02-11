@@ -27,14 +27,14 @@
     </header>
 
    <form id="persporiginrange">
-   		<p>Adjust each value to see how perspective is affected by the <code>perspective-origin</code> property.</p>
+   		<p>Adjust each value to see how the perspective and the transform are affected by the <code>perspective-origin</code> property.</p>
    		
         <fieldset><legend>perspective-origin: 
-        <span id="pxval">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <span id="pyval">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span id="pxval"></span>
+        <span id="pyval"></span>
         </legend>
         <p class="nowrap"><label for="perspectiveX">X</label><input type="range" id="perspectiveX" value="0" min="-2000" max="2000">
-        <label for="perspectiveY">Y</label><input type="range" id="perspectiveY" value="0" min="-2000" max="2000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+        <label for="perspectiveY">Y</label><input type="range" id="perspectiveY" value="0" min="-2000" max="2000"></p>
         </fieldset>
         <button type="reset">Reset</button>
     </form>
@@ -73,7 +73,7 @@
 			var px = document.getElementById('perspectiveX'),
 				py = document.getElementById('perspectiveY');
 
-				px.nextElementSibling.innerHTML = py.nextElementSibling.innerHTML = '';
+				document.getElementById('pxval').innerHTML = document.getElementById('pyval').innerHTML = '';
 				stage.removeAttribute('style');
 
 		},false);
