@@ -4,6 +4,22 @@
 	<meta charset="utf-8">
 	<title>3D CSS Transforms: Perspective</title>
 	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
+	<style type="text/css">
+	.perspective{
+    	-webkit-perspective: 100px;
+      	   -moz-perspective: 100px;
+            -ms-perspective: 100px;
+                perspective: 100px;
+	}
+
+	
+	.facet{ 
+		-webkit-transform: rotate3d(-10,0,0,-45deg);
+		   -moz-transform: rotate3d(-10,0,0,-45deg);
+			-ms-transform: rotate3d(-10,0,0,-45deg);
+				transform: rotate3d(-10,0,0,-45deg);
+	}
+	</style>
 </head>
 <body>
   <header>
