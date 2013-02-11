@@ -57,7 +57,16 @@ label{
 
 input[type]{font:inherit;}
 label{font-family:monospace;}
-button{margin-top:20px; font-family:sans-serif; font-size: 1em; font-weight:bold; background-color:#03c; color:#fff;border:1px solid #03c}
+button{
+	margin-top:20px; 
+	font-family:sans-serif; 
+	font-size: 1em; 
+	font-weight:bold; 
+	background-color:#03c; 
+	color:#fff;
+	border:1px solid #03c;
+	padding:.25em .5em;
+}
 
 #error{
 	padding:.5em;
