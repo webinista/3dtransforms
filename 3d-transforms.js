@@ -64,32 +64,3 @@ if(ct){
 	},true);
 } 
 
-if(rxyz){
-	rxyz.addEventListener('change', function(e){
-		var stage = document.getElementById('stage');	
-		stage.className = '';
-		switch( e.target.id ){
-			case 'rx':
-				stage.classList.add('rotatex');
-				break;
-			case 'ry':
-				stage.classList.add('rotatey');
-				break;
-			case 'rz':
-				stage.classList.add('rotatez');
-				break;		
-		}
-	}, false);
-	
-	rxyz.addEventListener('reset', function(e){
-		var stage = document.getElementById('stage');	
-		stage.className = '';	
-	}, false);
-	
-	// Resets the form and stops the animation if the tab loses focus.
-	document.addEventListener('visibilitychange', function(e){
-		if( document.hidden ){
-			rxyz.reset();
-		}
-	},false);
-}

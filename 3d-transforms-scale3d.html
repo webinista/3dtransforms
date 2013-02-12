@@ -6,12 +6,32 @@
 	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
 	<style type="text/css">
 	#stage{
-    -webkit-perspective: 500;
-       -moz-perspective: 500px;
-            perspective: 500px;
-   }
+    -webkit-perspective: 300px;
+       -moz-perspective: 300px;
+        -ms-perspective: 300px;
+            perspective: 300px;
+ 
+    -webkit-transform-style: preserve-3d;
+	   -moz-transform-style: preserve-3d;
+		-ms-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+ 	}
  	
-	.plane_s{
+ 	#wrap{
+    -webkit-transform-style: preserve-3d;
+	   -moz-transform-style: preserve-3d;
+		-ms-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+ 	}
+ 	
+ 	.scale3d{
+		-webkit-transform: scale3d(1,1,1);
+		   -moz-transform: scale3d(1,1,1); 
+		    -ms-transform: scale3d(1,1,1); 
+		        transform: scale3d(1,1,1);  	
+ 	}
+ 	
+	.plane{
 		padding: 1rem;
 		margin: 1rem auto;
 		font-size: 4rem;
@@ -19,96 +39,124 @@
 		color: #fff;
 		width: 500px;
 		text-align: center;
-		-webkit-backface-visibility: visible;
+
+		-webkit-transform: rotateY(45deg);
+		   -moz-transform: rotateY(-45deg); 
+		    -ms-transform: rotateY(45deg); 
+		        transform: rotateY(45deg); 
+		 		
 	}
 
-	.plane_s:first-child{
-		background: rgba(255,102,255,.7);
-		
+	.plane:first-child{
+    	background: rgba(255,102,255,.7);
+	}
+	.plane:nth-child(2){
+		background: rgba(255,204,0,.7);
+	}
+	.plane:nth-child(3){
+		background: rgba(0,0,255,.7);
 	}
 	
-
-
+	header,form{
+		background: rgba(255,255,255,.9);
+		position:relative;
+		z-index:9999;
+	}
+	form{	
+		width:inherit;
+	}
+	form p{
+		display:inline-block;
+	}
+	
+	
 	</style>
 </head>
 <body>
-	 <!-- <header>
-        <h1>3D CSS Transforms: <code>rotate3d()</code></h1>
-        <p>Adjust the value below to understand the effect of <code id="r3d">rotate3d()</code>.</p>
+	 <header>
+        <h1>3D CSS Transforms: <code>scale3d()</code></h1>
+        <p>Adjust the values below to understand the effect of <code id="r3d">scale3d()</code>.The objects below have been rotated 45 degrees along the Y axis.</p>
     </header>
     
- <form id="rotate3" action="#">
+ <form action="#">
     	<p>
     	<label for="x">x</label>
-    	<input type="number" id="x" name="x" value="0" required>
+    	<input type="number" id="x" name="x" value="1" required>
     	</p>
     	
     	<p>
     	<label for="y">y</label>
-    	<input type="number" id="y" name="y" value="0" required>
+    	<input type="number" id="y" name="y" value="1" required>
     	</p>
     	
     	<p>
     	<label for="z">z</label>
-    	<input type="number" id="z" name="z" value="0" required>
+    	<input type="number" id="z" name="z" value="1" required>
     	</p>
 
     	<p><button type="submit">Update</button> <button type="reset">Reset</button></p>
     	<br style="clear:both;">
-    </form> -->
+    </form> 
 
     <div id="stage">
-    	<div id="wrap">
-       	 	<div class="plane_s">1</div>
-       	 	<div class="plane_s">2</div>
-        	<div class="plane_s">3</div>
-        </div>
+    	<div id="wrap" class="scale3d">
+			<div class="plane">1</div>
+			<div class="plane">2</div>
+			<div class="plane">3</div>
+		</div>
     </div>
 
-<!-- <script type="application/javascript" src="3d-transforms.js"></script>
-<script>
-var form = document.forms[0];
+<script type="application/javascript" src="3d-transforms-resetonescape.js"></script>
 
+<script type="application/javascript">
+(function(){
+	var f = document.forms[0];
 
+	var updatecss = function(e){
+		e.preventDefault();
+		css = document.styleSheets[1],
+		s3d = css.cssRules[2].cssText.split(':')[0];
+		newrule = [];
+	
+		// Using array concatenation since it's a smidgen faster.
+		newrule[0] = s3d;
+		newrule[1] = ': ';
+		newrule[2] = 'scale3d(';
+		newrule[3] = f['x'].value;
+		newrule[4] = ', ';
+		newrule[5] = f['y'].value;	
+		newrule[6] = ', ';
+		newrule[7] = f['z'].value;	
+		newrule[8] = '); }';
 
-var updatecss = function(e){
-	e.preventDefault();
-	
-	var css = document.styleSheets[1],  // using the embedded style sheet.
-			inp = document.querySelectorAll('input'),
-			current = css.cssRules[0].cssText.split(':');
-	/*		val = [],
-			rotate3d = ': rotate3d(',
-			newrule = current[0];
-	
-	if(e.type == 'reset'){
-	
-		newrule += rotate3d; 
-		newrule += '0, 0, 0, 0deg); }';
-	
-	} else {
-	
-		// build new values
-		val[0] = +(inp[0].value);
-		val[1] = +(inp[1].value);
-		val[2] = +(inp[2].value);
-		newrule += rotate3d += val.join(',') + ');}';
+		newrule = newrule.join('');
+
+		css.insertRule(newrule,2); // Insert at the top of the rule stack.
+		css.deleteRule(3);         // Delete what is now the second rule.
+
 	}
-		
-	css.insertRule(newrule,0); // Insert at the top of the rule stack.
-	css.deleteRule(1);         // Delete what is now the second rule. */
+	var reset = function(e){
+		var css = document.styleSheets[1], 
+			selector = [], 
+			newrule;
 	
-	console.log( css.cssRules[0].cssText );
+		selector[0] = css.cssRules[2].cssText.split(':')[0];
+		selector[1] = ': ';
+		selector[2] = 'scale3d(1, 1, 1); }';
 	
+		newrule = selector.join('');
 	
-}
+		css.insertRule(newrule,2); // Insert at the top of the rule stack.
+		css.deleteRule(3);         // Delete what is now the second rule.
+	}
 
-form.addEventListener('reset',updatecss,false);
+	f.addEventListener('reset',reset,false);
 
-form.addEventListener('change',updatecss,false);
+	f.addEventListener('change',updatecss,false);
 
-form.addEventListener('submit',updatecss,false)
-</script> -->
+	f.addEventListener('submit',updatecss,false);
+})();
+</script>
 
 
 </body>

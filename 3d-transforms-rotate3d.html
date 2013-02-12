@@ -60,46 +60,47 @@
 <script type="application/javascript" src="3d-transforms.js"></script>
 
 <script>
-var form = document.forms[0];
+(function(){
+	var form = document.forms[0];
 
-
-
-var updatecss = function(e){
-	e.preventDefault();
+	var updatecss = function(e){
+		e.preventDefault();
 	
-	var css = document.styleSheets[1],  // using the embedded style sheet.
-			inp = document.querySelectorAll('input'),
-			current = css.cssRules[0].cssText.split(':'),
-			val = [],
-			rotate3d = ': rotate3d(',
-			newrule = current[0];
+		var css = document.styleSheets[1],  // using the embedded style sheet.
+				inp = document.querySelectorAll('input'),
+				current = css.cssRules[0].cssText.split(':'),
+				val = [],
+				rotate3d = ': rotate3d(',
+				newrule = current[0];
 	
-	if(e.type == 'reset'){
+		if(e.type == 'reset'){
 	
-		newrule += rotate3d; 
-		newrule += '0, 0, 0, 0deg); }';
+			newrule += rotate3d; 
+			newrule += '0, 0, 0, 0deg); }';
 	
-	} else {
+		} else {
 	
-		// build new values
-		val[0] = +(inp[0].value);
-		val[1] = +(inp[1].value);
-		val[2] = +(inp[2].value);
-		val[3] = inp[3].value;
+			// build new values
+			val[0] = +(inp[0].value);
+			val[1] = +(inp[1].value);
+			val[2] = +(inp[2].value);
+			val[3] = inp[3].value;
 		
-		newrule += rotate3d += val.join(',') + ');}';
+			newrule += rotate3d += val.join(',') + ');}';
+		}
+		
+		css.insertRule(newrule,0); // Insert at the top of the rule stack.
+		css.deleteRule(1);         // Delete what is now the second rule.
+	
 	}
-		
-	css.insertRule(newrule,0); // Insert at the top of the rule stack.
-	css.deleteRule(1);         // Delete what is now the second rule.
-	
-}
 
-form.addEventListener('reset',updatecss,false);
+	form.addEventListener('reset',updatecss,false);
 
-form.addEventListener('change',updatecss,false);
+	form.addEventListener('change',updatecss,false);
 
-form.addEventListener('submit',updatecss,false)
+	form.addEventListener('submit',updatecss,false);
+
+})();
 </script>
 
 
