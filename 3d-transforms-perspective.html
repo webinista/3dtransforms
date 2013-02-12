@@ -49,7 +49,6 @@
 		toggle.addEventListener('change', function(e){
 			e.preventDefault();
 			var stage = document.getElementById('stage');
-			// consider adding support for non classList browsers
 			e.target.checked ? stage.classList.add('perspective') : stage.classList.remove('perspective');
 		}, false);
 	}
