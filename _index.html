@@ -57,7 +57,7 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 <p>If you've ever studied drawing, you've probably learned how to <a href="http://en.wikipedia.org/wiki/Perspective_(graphical)">draw in perspective</a>. Perspective is the way to create the illusion of three dimensions when you only have two to work with. First, you create a point on your drawing surface; this is known as the  <strong>vanishing point.</strong> Then you draw guidelines from the edges of that paper to your vanishing point. As you continue to work, these guidelines determine the relative size of each object drawn, tricking the viewer's eye into perceiving depth or distance. Three-dimensional transforms work similarly.</p>
 
 
-<p>If we think of our drawing surface as a coordinate system, we can also think of our vanishing point as the <strong>origin</strong>. In a three-dimensional coordinate system, the origin is the location where the point along the x, y, and z axes is equal to zero (0,0,0) (<a href="#origin">Figure XXX</a>).</p>
+<p>If we think of our drawing surface as a <a href="http://en.wikipedia.org/wiki/Coordinate_system">coordinate system</a>, we can also think of our vanishing point as the <strong>origin</strong>. In a three-dimensional coordinate system, the origin is the location where the point along the x, y, and z axes is equal to zero (0,0,0) (<a href="#origin">Figure XXX</a>).</p>
 
 <figure>
 <!-- SVG --->
@@ -253,11 +253,13 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 </figure>
 <!-- END SVG -->
 
-<p>When our drawing surface is a document viewport, the x-axis is horizontal, the y-axis is vertical, and the z-axis sits perpendicular to the screen. This is known as the <em>global</em> coordinate system and (0,0,0) is the top-left corner of the viewport. When we apply a transform to an object using the <code>transform</code> property, we also a create <strong>local coordinate system</strong> for the object. Within this local coordinate system, the origin lies at the <em>center of the object</em> by default (50%, 50%, 0) and the screen plane is the z plane. We'll return to these concepts throughout this article.</p>  
+<p>When our drawing surface is a document viewport, the x-axis is horizontal, the y-axis is vertical, and the z-axis sits perpendicular to the screen. This is known as the <em>global</em> coordinate system and (0,0,0) is the top-left corner of the viewport. When we apply a transform to an object using the <code>transform</code> property, we also a create <strong>local coordinate system</strong> for the object. Within this local coordinate system, the origin lies at the <em>center of the object</em> by default (50%, 50%) and the screen plane is the z plane. We'll return to these concepts throughout this article.</p>  
+
+<p>Before we get into the nitty-gritty of transforms, there are a couple of things you should be aware of. Firstly, transforms are cumulative: children inherit and are affected by the transforms applied to their parents. Secondly, transformed objects aren't always rendered on screen. In some cases, this is because the transform has caused the coordinates of the object to be outside of the viewport. With transforms along the z-axis, for example, this could mean the the coordinates are "behind" the user. In other cases, a transform isn't applied because the cumulative transform matrix is <em><a href="http://en.wikipedia.org/wiki/Invertible_matrix">non-invertible</a></em> &#8212; in non-nerdy terms, the math just doesn't work out.</p> 
 
 <h3 id="perspectiveprop">The <code>perspective</code> property</h3>
 
-<p>Again, when we apply a transform, our drawing surface becomes a containing block. This can be the <code>body</code> element, a <code>div</code> element, or any other block-level element. Consider the following HTML and CSS.</p>
+<p>When we apply a transform, our drawing surface becomes a containing block. This can be the <code>body</code> element, a <code>div</code> element, or any other block-level element. Consider the following HTML and CSS.</p>
 
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -461,7 +463,35 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 
 <p>The <strong><code>translate3d()</code></strong> function works similarly, but accepts three arguments: an x-offset, a y-offset, and a z-offset value. It's a more succinct way to translate an object along all three axes. A transform value of <code>translate3d(200px,300px,-400px)</code>, for example, is the equivalent of <code>transform: translateX(200px) translateY(300px) translateZ(-400px)</code>.
 
-<h3 id="scaling" class="note">Scaling objects with scale3d() and scaleZ()</h3>
+
+<div class="note">
+<p>SO MAYBE SCALE Z ONLY WORKS WHEN Z IS NO ZERO OR 1?</P>
+<h3 id="scaling">Scaling objects with <code>scale3d()</code> and <code>scaleZ()</code></h3>
+
+<p>We can scale objects in the x (width) or y (height) dimensions using the <code>scaleX()</code>, <code>scaleY()</code> or <code>scale()</code> functions. With support for 3D transforms, we can also scale in the z (distance) dimension using <code>scaleZ()</code> or in all three dimensions at once using <code>scale3d()</code>. I'll focus on transformations along the z-axis in this section. You should be know, however, that <code>scale3d(1,1,1)</code> is equivalent to <code>scaleX(1) scaleY(1) scaleZ(1)</code> and <code>matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)</code>.</p>
+ 
+<p>In order to fully grok how the <code>scaleZ()</code> function works, we should look at the math involved. It always comes back to the math, doesn't it? But it will help, I promise.</p>
+
+<p>In the <a href="#matrix3d">section on matrices</a>, I mentioned that each transform function has an equivalent matrix. The same is true for <code>scale3d()</code>.</p>
+
+<figure id="scale3dmatrix">
+	<img src="3d-transforms-scale3d.png" alt="Rectangular matrix. Top row: sx 0 0 0, second row: 0 sy 0 0, third row: 0 0 sz 0, fourth row: 0 0 0 1">
+	<figcaption>The <code>scale3d()</code> matrix, where <code>sx</code> is the x-dimension, <code>sy</code> is the y-dimension, and <code>sz</code> is the z-dimension. </figcaption>
+</figure>
+
+<p>When the browser applies a transform matrix, it multiplies the matrix by the coordinate vector for each of the object's vertices (corners). The product of this operation are the object's transformed coordinates.</p>
+
+<p>Let's say we have a point at (100, 200, 1). We want to scale it along the z-axis by a factor of 3 &#8212; <code>transform: scale3d(1, 1, 3)</code>. That means we need to multiply our coordinate vector by our scaling matrix.
+
+<figure id="scale3dvectorproduct">
+	<img src="3d-transforms-scale3d2.png" alt="Vector product: 100, 200, 3, 1">
+	<figcaption>Multiplying our <code>scaling3d()</code> matrix by a coordinate vector produces coordinates of (100, 200, 3).</figcaption> 
+</figure>
+
+<p>As you can see, our z coordinate is now 3 &#8212; that is, our object is being rendered three units closer to us.
+</div>
+
+<p>As with two-dimensional scaling, positive numbers > 1 increase depth. Positive numbers that are greater than zero, but less than 1 will decrease the width, height, or depth. Negative numbers cause the object to appear flipped or further away. Precisely how it's rendered will depends on which other transforms have been applied to the object and its ancestors.</p>
 
 
 <h3 id="rotate">Rotating objects with <code>rotateX()</code>, <code>rotateY()</code> and <code>rotateZ()</code> and <code>rotate3d()</code></h3>
@@ -494,8 +524,6 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 <p> For example, <code>rotate3d(1,100,1,45deg)</code> rotates the object more severely around the y axis than around either the x or z axes. But increasing the y value to 1000 won't create a significantly more severe rotation than a value of 100. In a similar vein, whenever the x, y, and z values are the same the effect is about what you'd get if each value were 1. Using <code>rotate3d(22,22,22,45deg)</code> or  <code>rotate3d(198,198,198,45deg)</code> produces the same visual effect as <code>rotate3d(1,1,1,45deg)</code>.</p>
 
 <p>Both cases have to do with the way the <a href="http://www.w3.org/TR/css3-transforms/#Rotate3dDefined"><code>rotate3d</code> matrix</a>, is calculated. Using the same number for the x, y, and z, values results in virtually the same matrix regardless of what that number is. Should you change one (or two) of those values, however, it results in a different matrix. By <a href="3d-transforms-rotate3d.html">manipulating</a> each value, you can get a sense of how they interplay.</p>
-
-
 
 
 </html>
