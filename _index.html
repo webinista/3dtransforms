@@ -28,7 +28,7 @@
 	    <li><a href="#perspectivefunction">perspective()</a></li>
 		<li><a href="#matrix3d">matrix3d()</a></li>
 		<li><a href="#translating">Translating objects with <code>translate3d()</code> <code>translateZ()</code></a></li>
-        <li><a href="#scaling">Scaling objects with <code>scale3d()</code> 		and <code>scaleZ()</code></a></li>
+        <li><a href="#scaling">Scaling objects with <code>scale3d()</code> and <code>scaleZ()</code></a></li>
 		<li><a href="#rotating">Rotating objects with  
 		    <code>rotate3d()</code>, <code>rotateX()</code> and <code>rotateY()</code></a>
 		</li>
@@ -468,39 +468,42 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 
 <p>Translation transforms offset the rendering position of an object by the distance provided. You may already be familiar with the <code>translateX()</code>, <code>translateY()</code>, and <code>translate()</code> functions. These functions translate objects along the x-axis, y-axis, or both in the case of <code>translate()</code>. With 3D transforms, we now have two more translation functions at our disposal: <strong><code>translateZ()</code></strong> and <strong><code>translate3d()</code></strong>.</p>
 
-<p>As its name suggests, <strong><code>translateZ()</code></strong> causes an object to be offset by the specified distance along the z-axis. The z-axis, of course, is an imaginary line that sits perpendicular to the plane of the screen (<a href="#origin">figure XXX</a>). Translating along the z-axis affects the perception of distance (<a href="3d-transforms-transZ.html">view the demo</a>). Positive lengths appear closer to the viewer (and larger). Negative lengths appear to be farther away (and smaller).</p>
+<p>As its name suggests, <strong><code>translateZ()</code></strong> causes an object to be offset by the specified distance along the z-axis. The z-axis, of course, is an imaginary line that sits perpendicular to the plane of the screen (<a href="#origin">figure XXX</a>). Translating along the z-axis affects the perception of distance (<a href="3d-transforms-transZ.html">view the demo</a>). Positive lengths appear closer to the viewer (and objects are larger). Negative lengths appear to be farther away (and objects are smaller).</p>
 
 <p>The <strong><code>translate3d()</code></strong> function works similarly, but accepts three arguments: an x-offset, a y-offset, and a z-offset value. It's a more succinct way to translate an object along all three axes. A transform value of <code>translate3d(200px,300px,-400px)</code>, for example, is the equivalent of <code>transform: translateX(200px) translateY(300px) translateZ(-400px)</code>.
 
-
-<div class="note">
-<p>SO MAYBE SCALE Z ONLY WORKS WHEN Z IS NO ZERO OR 1?</P>
 <h3 id="scaling">Scaling objects with <code>scale3d()</code> and <code>scaleZ()</code></h3>
 
-<p>We can scale objects in the x (width) or y (height) dimensions using the <code>scaleX()</code>, <code>scaleY()</code> or <code>scale()</code> functions. With support for 3D transforms, we can also scale in the z (distance) dimension using <code>scaleZ()</code> or in all three dimensions at once using <code>scale3d()</code>. I'll focus on transformations along the z-axis in this section. You should be know, however, that <code>scale3d(1,1,1)</code> is equivalent to <code>scaleX(1) scaleY(1) scaleZ(1)</code> and <code>matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)</code>.</p>
+<p>We can scale objects in the x (width) or y (height) dimensions using the <code>scaleX()</code>, <code>scaleY()</code> or <code>scale()</code> functions. With support for 3D transforms, we can also scale in the z (distance) dimension using <code>scaleZ()</code> or in all three dimensions at once using <code>scale3d()</code>. I'll focus on transformations along the z-axis in this section. You should be know, however, that <code>transform: scale3d(2,1,3)</code> is equivalent to <code>transform: scale(2,1) scaleZ(3)</code> and <code>transform: matrix3d(2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1)</code>.</p>
  
-<p>In order to fully grok how the <code>scaleZ()</code> function works, we should look at the math involved. It always comes back to the math, doesn't it? But it will help, I promise.</p>
+<div class="note"> 
+<p>Scaling along the z-axis can be a bit tricky to understand. As with all transforms, it has everything to do with matrix and vector multiplication.</p>
 
-<p>In the <a href="#matrix3d">section on matrices</a>, I mentioned that each transform function has an equivalent matrix. The same is true for <code>scale3d()</code>.</p>
+<p>Any time we apply a transform, the browser multiplies the transform matrix by the coordinates for each of the object's vertices. This product determines where and whether the transformed object will be rendered. (Remember, if the coordinates exceed that of the viewport, the object won't be rendered.)</p>
 
-<figure id="scale3dmatrix">
-	<img src="3d-transforms-scale3d.png" alt="Rectangular matrix. Top row: sx 0 0 0, second row: 0 sy 0 0, third row: 0 0 sz 0, fourth row: 0 0 0 1">
-	<figcaption>The <code>scale3d()</code> matrix, where <code>sx</code> is the x-dimension, <code>sy</code> is the y-dimension, and <code>sz</code> is the z-dimension. </figcaption>
+<p>In most cases, when we transform our objects, our point on the z-axis is 0. When we apply a z-axis scaling transform to our object, <a href="#findingscalezcoordinates"> as shown below</a>, our value for the z-coordinate remains zero.</p> 
+
+<figure id="findingscalezcoordinates"><img src="3d-transforms-scalezmatrix.gif">
+<figcaption>Figure xxx: We're multiplying a 3D scaling matrix &#8212; the equivalent of <code>scaleZ(3)</code> by the coordinates of a point at (100,200,0).</figcaption>
 </figure>
 
-<p>When the browser applies a transform matrix, it multiplies the matrix by the coordinate vector for each of the object's vertices (corners). The product of this operation are the object's transformed coordinates.</p>
+<p>In order to see a visual effect of scaling along the z-axis, the product of our transform matrix and our object's vertices must result in a z value other than zero. Typically this occurs when we use a list of transform functions, and/or nest transformed objects. In <a href="rotateYscaleZ">figure XXXX</a>, we're finding the current transform matrix for <code>transform: rotateY(20deg) scaleZ(10)</code>.
 
-<p>Let's say we have a point at (100, 200, 1). We want to scale it along the z-axis by a factor of 3 &#8212; <code>transform: scale3d(1, 1, 3)</code>. That means we need to multiply our coordinate vector by our scaling matrix.</p>
-
-<figure id="scale3dvectorproduct">
-	<img src="3d-transforms-scale3d2.png" alt="Vector product: 100, 200, 3, 1">
-	<figcaption>Multiplying our <code>scaling3d()</code> matrix by a coordinate vector produces coordinates of (100, 200, 3).</figcaption> 
+<figure id="rotateYscaleZ">
+	<img src="3d-transforms-rotateY-scaleZ.gif" alt="Finding the matrix product of a y-axis rotation and a z-axis scaling transform">
+	<figcaption>
 </figure>
+</div> 
 
-<p>As you can see, our z coordinate is now 3 &#8212; that is, our object is being rendered three pixels closer to us, but that's generally imperceptible.
+<p>Now, if we multiply this new matrix transform by the coordinates of a point located at (100,200,0), we can see that we now have 
+
+<figure id="rotateYscaleZ">
+	<img src="3d-transforms-Zmorethan0.gif" alt="Finding the matrix product of a y-axis rotation and a z-axis scaling transform">
+	<figcaption>
+</figure>
+</div> 
 
 
-</div>
 
 <p>As with two-dimensional scaling, positive numbers > 1 increase depth. Positive numbers that are greater than zero, but less than 1 will decrease the width, height, or depth. Negative numbers cause the object to appear flipped or further away. Precisely how it's rendered will depends on which other transforms have been applied to the object and its ancestors.</p>
 
@@ -521,7 +524,7 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 <figcaption>Figure XXX: Using <code>rotateZ()</code> to tilt objects.</figcaption>
 </figure>
 
-<p>Each of these functions accepts a CSS angle as an argument. Valid values may be degrees (ex: <code>45deg</code>), radians (ex: <code>.21rad</code>), gradians (ex: <code>100grad</code>), or turns (<code>.25turn</code>). Units are defined in the <a href="http://www.w3.org/TR/css3-values/#angles">angles section</a> of the CSS Values and Units Module Level 3 specification.</p>
+<p>Each of these functions accepts a CSS angle as an argument. Valid values may be degrees (ex: <code>45deg</code>), radians (ex: <code>.21rad</code>), gradians (ex: <code>100grad</code>), or turns (ex: <code>.25turn</code>). Units are defined in the <a href="http://www.w3.org/TR/css3-values/#angles">angles section</a> of the CSS Values and Units Module Level 3 specification.</p>
 
 <p><code>rotate3d()</code> is a bit more complicated. It accepts four parameters. The first three values must be numbers, either positive or negative. They form an [x,y,z] direction vector. The fourth parameter determines the angle of rotation in each direction specified by the vector. Again: angles may be degrees, radians, grandians, or turns.</p>
 
