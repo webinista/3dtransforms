@@ -133,6 +133,7 @@
 	var f = document.forms[0];
 
 	var updatecss = function(e){
+		
 		e.preventDefault();
 		css = document.styleSheets[1],
 		s3d = css.cssRules[2].cssText.split(':')[0];
@@ -153,7 +154,6 @@
 
 		css.insertRule(newrule,2); // Insert at the top of the rule stack.
 		css.deleteRule(3);         // Delete what is now the second rule.
-
 	}
 	var reset = function(e){
 		var css = document.styleSheets[1], 
