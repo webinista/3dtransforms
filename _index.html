@@ -495,7 +495,7 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 </figure>
 </div> 
 
-<p>Now, if we multiply this new matrix transform by the coordinates of a point located at (100,200,0), we can see that we now have 
+<p>Now, if we multiply this new matrix transform by the coordinates of a point located at (100,200,0), we can see that we now have a z value. The transformed coordinates of our point is (94,200,34).
 
 <figure id="rotateYscaleZ">
 	<img src="3d-transforms-Zmorethan0.gif" alt="Finding the matrix product of a y-axis rotation and a z-axis scaling transform">
@@ -503,10 +503,7 @@ http://people.opera.com/tiffanyb/wkresearch/transforms.html
 </figure>
 </div> 
 
-
-
-<p>As with two-dimensional scaling, positive numbers > 1 increase depth. Positive numbers that are greater than zero, but less than 1 will decrease the width, height, or depth. Negative numbers cause the object to appear flipped or further away. Precisely how it's rendered will depends on which other transforms have been applied to the object and its ancestors.</p>
-
+<p>As with two-dimensional scaling, positive numbers that are greater than 1 increase the values along the z axis. Positive numbers that are greater than zero, but less than 1 will decrease them. Negative values for scaling along the z axis will cause the object to appear flipped or mirrored. Get a sense of how these values interact in the <a href="3d-transforms-scale3d.html">3d scaling demo</a>.</p>
 
 <h3 id="rotate">Rotating objects with <code>rotateX()</code>, <code>rotateY()</code> and <code>rotateZ()</code> and <code>rotate3d()</code></h3>
 
