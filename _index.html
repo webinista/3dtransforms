@@ -468,7 +468,7 @@
 <figcaption>Figure 11: We're multiplying a 3D scaling matrix &#8212; the equivalent of <code>scaleZ(3)</code> by the coordinates of a point at (100,200,0).</figcaption>
 </figure>
 
-<p>In order to see a visual effect of scaling along the z-axis, the product of our transform matrix and our object's vertices must result in a z value other than zero. Typically this occurs when we use a list of transform functions, and/or nest transformed objects. In <a href="#rotateYscaleZ">Figure 12</a>, we're finding the current transform matrix for <code>transform: rotateY(20deg) scaleZ(10)</code> (which is equivalent to <code>transform: rotateY(20deg) scale3d(1,1,10)</code>).
+<p>In order to see a visual effect of scaling along the z-axis, the product of our transform matrix and our object's vertices must result in a z value other than zero. Typically this occurs when we use a list of transform functions, and/or nest transformed objects. In <a href="#rotateYscaleZ">Figure 12</a>, we're finding the cumulative transform matrix for <code>transform: scaleZ(10) rotateY(20deg)</code> (which is equivalent to <code>transform: scale3d(1,1,10) rotateY(20deg)</code>).
 
 <figure id="rotateYscaleZ">
 	<img src="3d-transforms-rotateY-scaleZ.gif" alt="Finding the matrix product of a y-axis rotation and a z-axis scaling transform">
