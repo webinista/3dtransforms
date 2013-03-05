@@ -20,10 +20,10 @@ Creating playing cards
 	float: left;
 	width: 13.3rem;
 	position: relative;
-	-webkit-transition: -webkit-transform 5s ease-in-out;
-	   -moz-transition:    -moz-transform 5s ease-in-out;
-		-ms-transition:     -ms-transform 5s ease-in-out;
-			transition:         transform 5s ease-in-out;
+	-webkit-transition: -webkit-transform 1s ease-in-out;
+	   -moz-transition:    -moz-transform 1s ease-in-out;
+		-ms-transition:     -ms-transform 1s ease-in-out;
+			transition:         transform 1s ease-in-out;
 }
 
 .front, .back{
