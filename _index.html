@@ -248,7 +248,7 @@
 
 <p>When we transform an object using the <code>transform</code> property, we create a <strong>local coordinate system</strong> for the object. Within this local coordinate system, the transform origin lies at the <em>object's center</em>, or (50%, 50%, 0) &#8212; that is, 50% along the x, or horizontal axis and 50% along the y or vertical axis, and 0 along the z-axis.</p>  
 
-<p>Before we get into the nitty-gritty of transforms, there are a couple of things you should be aware of.</p>
+<p>Before we get into the nitty-gritty of transforms, there are a couple of things you should know.</p>
 
 <ul>
 	<li>Transforms are cumulative.</li>
@@ -443,6 +443,7 @@
 
 <p>Our matrix product values are then used as arguments for the <code>matrix3d()</code> function. We could use <code>transform: matrix3d(2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, -0.015, 0, 0, 0, 1)</code> instead of <code>transform: scale3d(2,3,3) perspective(200px)</code>. <a href="http://dev.opera.com/articles/view/understanding-the-css-transforms-matrix/">Understanding the CSS Transforms Matrix</a> covers this in a bit more depth.</p>
 
+<h4>Order and transform functions</h4>  
 <p><strong>Order matters</strong> when dealing with transform functions: <code>transform: perspective(200px) scale3d(2,3,3)</code> renders slightly differently than <code>transform: scale3d(2,3,3) perspective(200px)</code>. Why? Because matrices, when multiplied, are not <a href="http://en.wikipedia.org/wiki/Commutative">commutative</a>. Changing the order of the matrices results in a different matrix product, and therefore a different transform matrix.</p>
 
 <p>We can see how this works by using <code>getComputedStyle()</code> and <code>getPropertyValue()</code>. These functions will return the equivalent matrix for all transform functions applied to an object, as shown below.</p>
@@ -450,9 +451,11 @@
 <pre>var obj, matrix;
 obj = document.getElementById('my_element');
 matrix = getComputedStyle(obj).getPropertyValue('transform');
-console.log(matrix); // outputs either the matrix() or matrix3d() equivalent</pre>
+console.log(matrix);</pre>
 
-<p>Be aware, however, that this only retrieves the computed value for a single element. It <em>does not</em> tell you the whether its parent element has been transformed.</p>
+<p>If the transform applied is <code>perspective(200px) scale3d(2,3,3)</code>, the equivalent matrix is <code>matrix3d(2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, -0.015, 0, 0, 0, 1)</code>. Let's flip the order, so that the transform is <code>scale3d(2,3,3) perspective(200px)</code> instead. Then our equivalent, computed matrix is <code>matrix3d(2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, -0.005, 0, 0, 0, 1)</code>.</p>
+
+<p>Using <code>getComputedStyle()</code> has its limits of course. It only returns the computed value for a single element. It does not tell you the whether its parent element has also been transformed.</p>
 
 <p>Since using <code>matrix3d()</code> can make your CSS more obtuse than necessary, it's best to stick to the transform functions. I'll assume you're already familiar with two-dimensional transforms. For the rest of this article, we'll focus exclusively on 3D transform functions. if you need a primer on 2D transforms, read <a href="http://dev.opera.com/articles/view/css3-transitions-and-2d-transforms/">CSS3 transitions and 2D transforms</a>, our previous article on the subject.</p>
 
@@ -485,7 +488,7 @@ console.log(matrix); // outputs either the matrix() or matrix3d() equivalent</pr
 	<figcaption>Figure 12: Multiplying the matrix for a 20 degree rotation along the y axis by the matrix for a scale along the Z axis.</figcaption>
 </figure>
 
-<p>Now, if we multiply this new matrix transform by the coordinates of a point located at (100,200,0), we can see that we now have a z value that's greater than zero. The transformed coordinates of our point is (94,200,34).
+<p>Now, if we multiply this new matrix transform by the coordinates of a point located at (100,200,0), we can see that we now have a z value that's greater than zero. The transformed coordinates of our point is (94,200,34).</p>
 
 <figure id="rotateYscaleZ">
 	<img src="3d-transforms-Zmorethan0.gif" alt="Finding the matrix product of a y-axis rotation and a z-axis scaling transform">
@@ -524,9 +527,16 @@ console.log(matrix); // outputs either the matrix() or matrix3d() equivalent</pr
 
 
 <div class="note">
-<p>Here's the catch: larger numbers do not necessarily create a more exaggerated rotation. The resulting transform is, as with all transforms, rendered based on the product of the transform matrix and the coordinate vector.</p>
+<p>Here's the catch: larger numbers do not necessarily create a more exaggerated rotation. Using <code>rotate3d(1,1000,1,45deg)</code>, for example, won't create a more severe rotation around the x-axis than <code>rotate3d(1,100,1,45deg)</code> will.</p>
 
-<!-- <p>Using the same number for the x, y, and z, values results in virtually the same matrix regardless of what that number is. Should you change one (or two) of those values, however, it results in a different matrix. By manipulating each value in the <a href="3d-transforms-rotate3d.html"><code>rotate3d()</code></a> demo, you can get a sense of how they interplay.</p> 00>
+<p>What's the deal? Once again, it's the matrix.</p>
+
+
+
+
+
+
+<p>By manipulating each value in the <a href="3d-transforms-rotate3d.html"><code>rotate3d()</code></a> demo, you can get a sense of how they interplay.</p>
 </div>
 
 
