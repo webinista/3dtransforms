@@ -244,7 +244,7 @@
 </figure>
 <!-- END SVG -->
 
-<p>When our drawing surface is a document viewport, the x-axis is horizontal, the y-axis is vertical, and the z-axis sits perpendicular to the screen. This is known as the <em>global</em> coordinate system. Point (0,0) sits at the top-left corner of the viewport. The screen's plane sits at the zero point along the z-axis (a plane, you may remember from geometry, is a <a href="http://en.wikipedia.org/wiki/Plane_(geometry)">flat, two-dimensional surface</a>).</p>
+<p>When our drawing surface is a document viewport, the x-axis is horizontal, the y-axis is vertical, and the z-axis sits perpendicular to the screen. This is known as the <em>global</em> coordinate system. Point (0,0) sits at the top-left corner of the viewport, and the screen's plane sits at the zero point along the z-axis. A plane, you may remember from geometry class, is a <a href="http://en.wikipedia.org/wiki/Plane_(geometry)">flat, two-dimensional surface</a>.</p>
 
 <p>When we transform an object using the <code>transform</code> property, we create a <strong>local coordinate system</strong> for the object. Within this local coordinate system, the transform origin lies at the <em>object's center</em>, or (50%, 50%, 0) &#8212; that is, 50% along the x, or horizontal axis and 50% along the y or vertical axis, and 0 along the z-axis.</p>  
 
@@ -368,7 +368,8 @@
 <figcaption>Figure 6: The card on the left has a <code>backface-visibility</code> of <code>visible</code> while the one on the right has a value of <code>hidden</code>.</figcaption>
 </figure>
 
-<p>In <a href="#backfacevis">Figure 6</a> above, the background color for both cards is transparent. The only difference between the two is that card on the left has a <code>backface-visibility</code> value of <code>visible</code>, while the card on the right has a <code>backface-visibility</code> value of <code>hidden</code> (<a href="3d-transforms-backface.html">view the <code>backface-visibility</code> demo</a>) (CHRIS - IT FEELS LIKE YOU SHOULD HAVE THIS SECTION BEFORE THE BIT ON TRANSFORM-STYLE, AS TRANSFORM-STYLE DEMO USES BACKFACE-VISIBILITY; SO THIS SHOULD COME FIRST).</p> 
+<p>In <a href="#backfacevis">Figure 6</a> above, the background color for both cards is transparent. The only difference between the two is that card on the left has a <code>backface-visibility</code> value of <code>visible</code>, while the card on the right has a <code>backface-visibility</code> value of <code>hidden</code> (<a href="3d-transforms-backface.html">view the <code>backface-visibility</code> demo</a>).</p> 
+
 <h4 id="transstyle">Setting a <code>transform-style</code></h4>
 
 <p>As with a paper drawing, three-dimensional transforms map three dimensions of coordinates into the two dimensions of a screen. By default, transformed objects behave as a single plane. However, we can mimic multi-sided objects by using the <code>transform-style</code> property. Valid values for the <code>transform-style</code> property are <code>flat</code> and <code>preserve-3d</code>. The default is <code>flat</code>.</p>
