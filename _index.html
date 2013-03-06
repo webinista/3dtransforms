@@ -19,8 +19,8 @@
 	</li>
 	<li><a href="#twosides">Two-sides to a transformed object</a>
 	<ol>
-	    <li><a href="#transstyle">transform-style</a></li>
 	    <li><a href="#backfacevisibility">backface-visibility</a></li>
+	    <li><a href="#transstyle">transform-style</a></li>
     </ol>
     </li>
 	<li><a href="#transformfuncs">The transform functions</a>
@@ -244,7 +244,9 @@
 </figure>
 <!-- END SVG -->
 
-<p>When our drawing surface is a document viewport, the x-axis is horizontal, the y-axis is vertical, and the z-axis sits perpendicular to the screen. This is known as the <em>global</em> coordinate system, with (0,0,0) at the top-left corner of the viewport. When we apply a transform to an object using the <code>transform</code> property, we also create a <strong>local coordinate system</strong> for the object. Within this local coordinate system, the origin lies at the <em>center of the object</em> by default (50%, 50%) and the screen plane is the z plane (CHRIS - IT DOESN'T SEEM LIKE YOU EXPLAIN THIS TERM - ADD A DEFINITION?). We'll return to these concepts throughout this article.</p>  
+<p>When our drawing surface is a document viewport, the x-axis is horizontal, the y-axis is vertical, and the z-axis sits perpendicular to the screen. This is known as the <em>global</em> coordinate system. Point (0,0) sits at the top-left corner of the viewport. The screen's plane sits at the zero point along the z-axis (a plane, you may remember from geometry, is a <a href="http://en.wikipedia.org/wiki/Plane_(geometry)">flat, two-dimensional surface</a>).</p>
+
+<p>When we transform an object using the <code>transform</code> property, we create a <strong>local coordinate system</strong> for the object. Within this local coordinate system, the transform origin lies at the <em>object's center</em>, or (50%, 50%, 0) &#8212; that is, 50% along the x, or horizontal axis and 50% along the y or vertical axis, and 0 along the z-axis.</p>  
 
 <p>Before we get into the nitty-gritty of transforms, there are a couple of things you should be aware of.</p>
 
@@ -253,9 +255,9 @@
 	<li>A transformed object might not be rendered on screen.</li>
 </ul>
 	
-<p>"Cumulative" means that children inherit and are affected by the transforms applied to their parents (CHRIS - WHY CAN'T YOU JUST SAY THEY ARE INHERITED? THIS WOULD BE MUCH EASIER TO UNDERSTAND.). Similarly, a list of transform functions is the same as a nested set of transforms. In other words, <code>&lt;div style="transform: rotateY(45deg) scaleZ(3)"&gt;</code> is the equivalent of a pair of nested <code>div</code> elements, with a rotation transform applied to the parent, and a scaling transform applied to the child.</p>  
+<p><strong>Cumulative</strong> means that children inherit the transforms applied to their parents. In practical terms, this means, <code>&lt;div style="transform: rotateY(45deg) scaleZ(3)"&gt;&lt;/div&gt;</code> is the equivalent of a pair of nested <code>div</code> elements, with a rotation transform applied to the parent, and a scaling transform applied to the child. Cumulative also means that a list of transform functions are applied in the order listed.</p>  
 
-<p>Transforms may not be rendered for a couple of reasons. Usually it's because the transform applied has caused the coordinates of the object to be exist of the viewport (CHRIS - TO EXIST OUTSIDE THE VIEWPORT?). With transforms along the z-axis, for example, this could mean the the coordinates are "behind" the user. In other cases, a transform might not be applied because the cumulative transform matrix is <em><a href="http://en.wikipedia.org/wiki/Invertible_matrix">non-invertible</a></em> &#8212; in non-nerdy terms, the math just doesn't work out.</p> 
+<p>Transforms may not be rendered for a couple of reasons. Usually it's because the transform applied has caused the coordinates of the object to exist outside of the viewport. With transforms along the z-axis, for example, this could mean the coordinates are &#8220;behind&#8221; the user. In other cases, a transform might not be applied because the cumulative transform matrix is <em><a href="http://en.wikipedia.org/wiki/Invertible_matrix">non-invertible</a></em> &#8212; in non-nerdy terms, the math just doesn't work out.</p> 
 
 <h3 id="perspectiveprop">The <code>perspective</code> property</h3>
 
@@ -291,7 +293,7 @@
 
 
 
-<p>You've probably noticed that we applied our <code>perspective</code> property to <code>#stage</code> rather than to its child elements. That's because <code>perspective</code> sets the stage, so to speak, for the transforms applied to its children (<a href="#perspective1">Figure 3</a>). Without the <code>perspective</code> property, your transforms may appear flat and two-dimensional (<a href="3d-transforms-perspective.html">view a demo</a>). (CHRIS - WHEN I VIEWED THIS IN CHROME, THE TOP CHILD ELEMENT APPEARED INVERTED. IT WAS BECAUSE THE PERSPECTIVE WAS SET TO 100PX. I'VE SET IT TO 500PX IN THE CODE EXAMPLE.)</p>
+<p>You've probably noticed that we applied our <code>perspective</code> property to <code>#stage</code> rather than to its child elements. That's because <code>perspective</code> sets the stage, so to speak, for the transforms applied to its children (<a href="#perspective1">Figure 3</a>). Without the <code>perspective</code> property, your transforms may appear flat and two-dimensional (<a href="3d-transforms-perspective.html">view a demo</a>).</p>
 </p>
 
 <figure id="perspective1">
@@ -357,9 +359,19 @@
 
 <p>Here we have our main container — <code>&lt;div id="deck"&gt;</code> — and our <em>card</em> container, <code>&lt;div class="card"&gt;</code>. Nested within our card container are the faces of the card, <code>&lt;div class="back"&gt;</code> and <code>&lt;div class="front"&gt;</code>.</p>
 
+<h4 id="backfacevisibility">Showing or hiding a side with <code>backface-visibility</code></h4>
+
+<p>As mentioned above, at any given time, a real playing card has a side you can see and a side you can't. The side you can't see is known as its <em>back face.</em> With 3D transforms, we can control the visibility of this back face using the <code>backface-visibility</code>  property. Valid values are <code>visible</code> and <code>hidden</code>. By default, back faces are visible.</p>
+
+<figure id="backfacevis">
+<img src="3d-transforms-backface.png">
+<figcaption>Figure 6: The card on the left has a <code>backface-visibility</code> of <code>visible</code> while the one on the right has a value of <code>hidden</code>.</figcaption>
+</figure>
+
+<p>In <a href="#backfacevis">Figure 6</a> above, the background color for both cards is transparent. The only difference between the two is that card on the left has a <code>backface-visibility</code> value of <code>visible</code>, while the card on the right has a <code>backface-visibility</code> value of <code>hidden</code> (<a href="3d-transforms-backface.html">view the <code>backface-visibility</code> demo</a>) (CHRIS - IT FEELS LIKE YOU SHOULD HAVE THIS SECTION BEFORE THE BIT ON TRANSFORM-STYLE, AS TRANSFORM-STYLE DEMO USES BACKFACE-VISIBILITY; SO THIS SHOULD COME FIRST).</p> 
 <h4 id="transstyle">Setting a <code>transform-style</code></h4>
 
-<p>As with a drawing (CHRIS - WHAT DOYOU MEAN BY "DRAWING"?), three-dimensional transforms map three dimensions of coordinates into the two dimensions of a screen. By default, transformed objects behave as a single plane. However, we can mimic multi-sided objects by using the <code>transform-style</code> property. Valid values for the <code>transform-style</code> property are <code>flat</code> and <code>preserve-3d</code>. The default is <code>flat</code>.</p>
+<p>As with a paper drawing, three-dimensional transforms map three dimensions of coordinates into the two dimensions of a screen. By default, transformed objects behave as a single plane. However, we can mimic multi-sided objects by using the <code>transform-style</code> property. Valid values for the <code>transform-style</code> property are <code>flat</code> and <code>preserve-3d</code>. The default is <code>flat</code>.</p>
 
 <p>In <a href="#transformstyle">figure 5</a> below, we have two cards with the same markup and largely the same CSS. However, for the left card, the value of the <code>transform-style</code> property is <code>flat</code>. For the right card, the value is <code>preserve-3d</code>. If we flip them over, as shown in our <a href="3d-transforms-transform-style.html">3D transform-style demo</a>, we can see that the left card appears to be a flattened plane. We can, however, see the other side of the card on the right.</p>
 
@@ -376,17 +388,6 @@
 	<li><code>opacity</code> when the value is something other than <code>1</code></li>
 	<li><code>filter</code> when the value is something other than <code>none</code> </li>
 </ul>
-
-<h4 id="backfacevisibility">Showing or hiding a side with <code>backface-visibility</code></h4>
-
-<p>As mentioned above, at any given time, a real playing card has a side you can see and a side you can't. The side you can't see is known as its <em>back face.</em> With 3D transforms, we can control the visibility of this back face using the <code>backface-visibility</code>  property. Valid values are <code>visible</code> and <code>hidden</code>. By default, back faces are visible.</p>
-
-<figure id="backfacevis">
-<img src="3d-transforms-backface.png">
-<figcaption>Figure 6: The card on the left has a <code>backface-visibility</code> of <code>visible</code> while the one on the right has a value of <code>hidden</code>.</figcaption>
-</figure>
-
-<p>In <a href="#backfacevis">Figure 6</a> above, the background color for both cards is transparent. The only difference between the two is that card on the left has a <code>backface-visibility</code> value of <code>visible</code>, while the card on the right has a <code>backface-visibility</code> value of <code>hidden</code> (<a href="3d-transforms-backface.html">view the <code>backface-visibility</code> demo</a>) (CHRIS - IT FEELS LIKE YOU SHOULD HAVE THIS SECTION BEFORE THE BIT ON TRANSFORM-STYLE, AS TRANSFORM-STYLE DEMO USES BACKFACE-VISIBILITY; SO THIS SHOULD COME FIRST).</p> 
 
 <h2 id="transformfuncs">The transform functions</h2>
 
@@ -459,7 +460,7 @@
  
 <p>Scaling along the z-axis can be a bit tricky to understand at first. As with all transforms, it has to do with matrix and vector multiplication.</p>
 
-<p>Whenever we apply a transform, the browser multiplies the transform matrix by the coordinates for each of the object's vertices. This product determines where and whether the transformed object will be rendered. (Remember, if the coordinates exceed that (CHRIS - THE WHAT OF THE VIEWPORT? BE A LITTLE MORE SPECIFIC) of the viewport, the object won't be rendered.)</p>
+<p>Whenever we apply a transform, the browser multiplies the transform matrix by the coordinates for each of the object's vertices. This product determines where and whether the transformed object will be rendered. (Remember, if the coordinates exceed the dimensions of the viewport, the object won't be rendered.)</p>
 
 <p>In most cases, when we transform our objects, our point on the z-axis is 0. When we apply a z-axis scaling transform to our object, <a href="#findingscalezcoordinates">as shown in Figure 11</a>, our value for the z-coordinate remains zero.</p> 
 
