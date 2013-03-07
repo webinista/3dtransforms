@@ -34,7 +34,7 @@
 <body>
 <header>
         <h1>3D CSS Transforms: <code>rotate3d()</code></h1>
-        <p>Adjust the values below to understand the effect of <code id="r3d">rotate3d()</code>. The unit for <code>angle</code> may be degrees (<code>deg</code>), radians (rad), gradians (<code>grad</code>) or turns (<code>turn</code>).</p>
+        <p>Adjust the values below to understand the effect of <code id="r3d">rotate3d()</code>. The unit for <code>angle</code> may be degrees (<code>deg</code>), radians (rad), gradians (<code>grad</code>) or turns (<code>turn</code>). Open the developer console to view the current matrix for the transform.</p>
     </header>
     
    <form id="rotate3" action="3d-transforms-rotate3d.html">
@@ -55,7 +55,7 @@
     	
     	<p>
     	<label for="angle">angle</label>
-    	<input type="text" id="angle" name="angle" value="0deg" required pattern="[.0-9]{1,}(deg|turn|rad|grad)" title="Include a unit such as deg, turn, rad, or grad">
+    	<input type="text" id="angle" name="angle" value="0deg" required pattern="[-.0-9]{1,}(deg|turn|rad|grad)" title="Include a unit such as deg, turn, rad, or grad">
     	</p>
     	<p><button type="reset">Reset</button></p>
     	<br style="clear:both;">
@@ -72,10 +72,29 @@
 (function(){
 	var form   = document.forms[0],
 	    inputs = document.querySelectorAll('input'),
-		updatecss;
+		updatecss, 
+		getmatrices;
+			
+	getmatrices = function(){
+		var pl = document.querySelector('.plane');
+		
+		if( window.console ){
+			var prefix = ['-webkit-','-ms-','-moz-','-o-',''];
+				
+			prefix.map( function(p){
+				var mtx = getComputedStyle(pl).getPropertyValue(p+'transform');
+				if( mtx ){
+					console.log( mtx );
+				}
+			}); 
+
+		}
+	}
 			
 	updatecss = function(e){
-	
+		e.stopImmediatePropagation();
+		e.stopPropagation();
+		
 		var css = document.styleSheets[1],  // using the embedded style sheet.
 				inp = inputs,
 				current = css.cssRules[0].cssText.split(':'),
@@ -89,7 +108,7 @@
 			newrule += '0, 0, 0, 0deg); }';
 	
 		} else {
-		
+			
 			// build new values
 			val[0] = +(inp[0].value);
 			val[1] = +(inp[1].value);
@@ -102,14 +121,16 @@
 	
 		css.insertRule(newrule,0); // Insert at the top of the rule stack.
 		css.deleteRule(1);         // Delete what is now the second rule.
-	
+		
+		getmatrices();
+		
 	}
 
 	form.addEventListener('reset',updatecss,false);
-
 	form.addEventListener('change',updatecss,false);
-
-	form.addEventListener('submit',function(e){ e.preventDefault(); },false);
+	form.addEventListener('submit',function(e){ 
+		e.preventDefault(); 
+	},false);
 
 })();
 </script>
