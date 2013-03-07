@@ -19,33 +19,43 @@
 		width:inherit;
 	}
 	#rotate3 p{display:inline-block;}
+	
+	input{padding:.2em}
+	input, input:invalid{
+		border: 2px solid #999;
+	}
+	
+	input:invalid{
+		border: 2px solid #c00;
+		outline:none;
+	}
 	</style>
 </head>
 <body>
 <header>
         <h1>3D CSS Transforms: <code>rotate3d()</code></h1>
-        <p>Adjust the values below to understand the effect of <code id="r3d">rotate3d()</code>.</p>
+        <p>Adjust the values below to understand the effect of <code id="r3d">rotate3d()</code>. The unit for <code>angle</code> may be degrees (<code>deg</code>), radians (rad), gradians (<code>grad</code>) or turns (<code>turn</code>).</p>
     </header>
     
-   <form id="rotate3" action="#">
+   <form id="rotate3" action="3d-transforms-rotate3d.html">
     	<p>
     	<label for="x">x</label>
-    	<input type="number" id="x" name="x" value="0" required>
+    	<input type="number" id="x" name="x" value="0" required title="This value must be a number">
     	</p>
     	
     	<p>
     	<label for="y">y</label>
-    	<input type="number" id="y" name="y" value="0" required>
+    	<input type="number" id="y" name="y" value="0" required title="This value must be a number">
     	</p>
     	
     	<p>
     	<label for="z">z</label>
-    	<input type="number" id="z" name="z" value="0" required>
+    	<input type="number" id="z" name="z" value="0" required title="This value must be a number">
     	</p>
     	
     	<p>
     	<label for="angle">angle</label>
-    	<input type="text" id="angle" name="angle" value="0deg" required>
+    	<input type="text" id="angle" name="angle" value="0deg" required pattern="[.0-9]{1,}(deg|turn|rad|grad)" title="Include a unit such as deg, turn, rad, or grad">
     	</p>
     	<p><button type="reset">Reset</button></p>
     	<br style="clear:both;">
@@ -60,13 +70,14 @@
 <script type="application/javascript" src="3d-transforms-escreset.js"></script>
 <script>
 (function(){
-	var form = document.forms[0];
-
-	var updatecss = function(e){
-		e.preventDefault();
+	var form   = document.forms[0],
+	    inputs = document.querySelectorAll('input'),
+		updatecss;
+			
+	updatecss = function(e){
 	
 		var css = document.styleSheets[1],  // using the embedded style sheet.
-				inp = document.querySelectorAll('input'),
+				inp = inputs,
 				current = css.cssRules[0].cssText.split(':'),
 				val = [],
 				rotate3d = ': rotate3d(',
@@ -78,16 +89,17 @@
 			newrule += '0, 0, 0, 0deg); }';
 	
 		} else {
-	
+		
 			// build new values
 			val[0] = +(inp[0].value);
 			val[1] = +(inp[1].value);
 			val[2] = +(inp[2].value);
-			val[3] = inp[3].value;
-		
-			newrule += rotate3d += val.join(',') + ');}';
+			
+			inp[3].validity.valid === true ? val[3] = inp[3].value : val[3] = inp[3].value+='deg';
+			
+			newrule += rotate3d += val.join(',') + '); }';
 		}
-		
+	
 		css.insertRule(newrule,0); // Insert at the top of the rule stack.
 		css.deleteRule(1);         // Delete what is now the second rule.
 	
@@ -97,7 +109,7 @@
 
 	form.addEventListener('change',updatecss,false);
 
-	form.addEventListener('submit',updatecss,false);
+	form.addEventListener('submit',function(e){ e.preventDefault(); },false);
 
 })();
 </script>
