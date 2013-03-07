@@ -333,7 +333,7 @@
 
 <p>In all of the examples above, we've looked at what amounts to a single plane. So what do we do when we want to mimic both sides of an object, for example a playing card demo? This is where the <code>transform-style</code> and <code>backface-visibility</code> properties come into play.</p>
 
-<p>Think about a playing card. It has two sides, one of which you can see at any given time and one you can't see. That's unlike the planes we've been working with so far. Let's look at the markup we might use to create a playing card.</p>
+<p>Think about a playing card. It has two sides, one of which you can see at any given time and one you can't see. Let's look at the markup we might use to create a playing card.</p>
 
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -356,11 +356,11 @@
 
 <h4 id="backfacevisibility">Showing or hiding a side with <code>backface-visibility</code></h4>
 
-<p>As mentioned above, at any given time, a real playing card has a side you can see and a side you can't. The side you can't see is known as its <em>back face.</em> With 3D transforms, we can control the visibility of this back face using the <code>backface-visibility</code>  property. Valid values are <code>visible</code> and <code>hidden</code>. By default, back faces are visible.</p>
+<p>As mentioned above, at any given time, a real playing card has a side you can see and a side you can't. The side you can't see is known as its <em>back face.</em> With 3D transforms, we can control the visibility of this back face using the <code>backface-visibility</code>  property. Valid values are <code>visible</code> and <code>hidden</code>. Back faces are visible by default.</p>
 
 <figure id="backfacevis">
 <img src="3d-transforms-backface.png">
-<figcaption>Figure 5: The card on the left has a <code>backface-visibility</code> of <code>visible</code> while the one on the right has a value of <code>hidden</code>.</figcaption>
+<figcaption>Figure 5: The card on the left has a <code>backface-visibility</code> of <code>visible</code>, while the one on the right has a value of <code>hidden</code>.</figcaption>
 </figure>
 
 <p>In <a href="#backfacevis">Figure 5</a> above, the background color for both cards is transparent. The only difference between the two is that card on the left has a <code>backface-visibility</code> value of <code>visible</code>, while the card on the right has a <code>backface-visibility</code> value of <code>hidden</code> (<a href="3d-transforms-backface.html">view the <code>backface-visibility</code> demo</a>).</p> 
@@ -369,21 +369,23 @@
 
 <p>As with a paper drawing, three-dimensional transforms map three dimensions of coordinates into the two dimensions of a screen. By default, transformed objects behave as a single plane. However, we can mimic multi-sided objects by using the <code>transform-style</code> property. Valid values for the <code>transform-style</code> property are <code>flat</code> and <code>preserve-3d</code>. The default is <code>flat</code>.</p>
 
-<p>In <a href="#transformstyle">figure 6</a> below, we have two cards with the same markup and largely the same CSS. However, for the left card, the value of the <code>transform-style</code> property is <code>flat</code>. For the right card, the value is <code>preserve-3d</code>. If we flip them over, as shown in our <a href="3d-transforms-transform-style.html">3D transform-style demo</a>, we can see that the left card appears to be a flattened plane. We can, however, see the other side of the card on the right.</p>
+<p>In <a href="#transformstyle">Figure 6</a> below, we have two cards with the same markup and largely the same CSS. However, for the left card, the value of the <code>transform-style</code> property is <code>flat</code>. For the right card, the value is <code>preserve-3d</code>. If we flip them over, as shown in our <a href="3d-transforms-transform-style.html">3D transform-style demo</a>, we can see that the left card appears to be a flattened plane. We can, however, see the other side of the card on the right.</p>
 
 <figure id="transformstyle">
 <img src="3d-transforms-transstyle.png">
-<figcaption>Figure 6: The card on the left has a <code>transform-style</code> of <code>flat</code> while the one on the right has a value of <code>preserve-3d</code>. (CHRIS - ALSO, IT WOULD BE MORE EFFECTIVE TO DEMONSTRATE THIS BY SHOWING TWO CARDS, SEPARATED IN 3D SPACE USING TRANSLATEZ AND A BIT OF SKEW, SO THAT YOU CAN SEE THE DIFFERENT POSITION IN 3D SPACE, WHICH IS BROKEN IF TRANSFORM-STYLE IS FLAT.)</figcaption>
+<figcaption>Figure 6: The card on the left has a <code>transform-style</code> of <code>flat</code> while the one on the right has a value of <code>preserve-3d</code>. <mark>(CHRIS - ALSO, IT WOULD BE MORE EFFECTIVE TO DEMONSTRATE THIS BY SHOWING TWO CARDS, SEPARATED IN 3D SPACE USING TRANSLATEZ AND A BIT OF SKEW, SO THAT YOU CAN SEE THE DIFFERENT POSITION IN 3D SPACE, WHICH IS BROKEN IF TRANSFORM-STYLE IS FLAT.)</mark></figcaption>
 </figure>
 
-<p>Using <code>transform-style: preserve-3d</code> also establishes a stacking context, but a few CSS properties and values can override its behavior. As required by their respective specifications, the following properties and values require the user agent to create a flattened representation of child elements before they can be applied.</p>
+<p>Using <code>transform-style: preserve-3d</code> also establishes a stacking context but in some cases, a CSS property can override this. According to their respective specifications, the following properties and values require the user agent to create a flattened representation of child elements before they can be applied.</p>
 
 <ul>
 	<li><code>overflow: hidden</code></li>
 	<li><code>overflow: scroll</code></li>
-	<li><code>opacity</code> when the value is something other than <code>1</code></li>
-	<li><code>filter</code> when the value is something other than <code>none</code> </li>
+	<li><code>filter</code> when the value is other than <code>none</code></li>
 </ul>
+
+<p></p>
+
 
 <h2 id="transformfuncs">The transform functions</h2>
 
@@ -399,7 +401,7 @@
 
 <h3 id="perspectivefunction"><code>perspective()</code></h3>
 
-<p>The <code>perspective()</code> function represents the distance of the z-plane (z = 0) from the viewer. Its argument must have a length such as pixels or ems, and a value greater than zero. Using it causes points to be scaled in the X and Y directions based on their Z values (see <a href="#perspectivefunc">Figure 7</a>). Lower values create a more exaggerated perspective effect, while Higher values do the opposite.</p>
+<p>The <code>perspective()</code> function represents the distance of the z-plane (z = 0) from the viewer. Its argument must have a length such as pixels or ems, and a value greater than zero. Using it causes points to be scaled in the X and Y directions based on their Z values (see <a href="#perspectivefunc">Figure 7</a>). Lower values create a more exaggerated perspective effect, while higher values do the opposite.</p>
 
 <figure id="perspectivefunc">
 <img src="3d-transforms-perspective-func.png">
