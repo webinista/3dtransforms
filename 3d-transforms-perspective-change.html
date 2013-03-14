@@ -42,7 +42,7 @@
 
     <form id="persprange">
         <p><label for="perspective">perspective:</label> 
-        <input type="range" id="perspective" value="500" min="1" max="1500" required>
+        <input type="range" id="perspective" value="500" min="0" max="1500" required>
         <span id="startval" data-start="500"></span>px</p>
         <p><button type="reset">Reset</button></p>
     </form>
@@ -75,6 +75,7 @@
 	
 			c.insertRule(newrule ,0); // Insert at the top of the rule stack.
 			c.deleteRule(1);         // Delete what is now the second rule.
+			console.log( value );
 		};
 	
 	f.addEventListener('submit',function(e){ 
@@ -99,7 +100,7 @@
 		// Remove the error message if there is one.
 		removeError();
 		
-		if( perspective <= 0 ){
+		if( perspective < 0 ){
 			showError();
 			return;
 		}

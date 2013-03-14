@@ -53,6 +53,8 @@ function updateStyle( value ){
 	 	
 	css.insertRule(nr,1); // Insert at the old position.
 	css.deleteRule(2);    // Delete what is now the second rule.
+	
+	console.log( value );
 }
 
 form.addEventListener('submit', function(e){
@@ -70,7 +72,7 @@ form.addEventListener('change', function(e){
 	// Remove the error message if there is one.
 	removeError();
 	
-	if( value <= 0 ){
+	if( value < 0 ){
 		showError();
 		return;
 	} 
