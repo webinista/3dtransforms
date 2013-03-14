@@ -42,17 +42,16 @@ function updateStyle( value ){
 		newrule = [],
 		nr;
 		
-		value = value + ''; // forces this to be a string.
+	value = value + ''; // forces this to be a string.
 		
-		newrule[0] = oldrule[0]+':';
-		newrule[1] = oldrule[1].replace(/(perspective\()\d{1,}px\)/i, "$1"+value+'px)');
+	newrule[0] = oldrule[0]+':';
+	newrule[1] = oldrule[1].replace(/(perspective\()\d{1,}px\)/i, "$1"+value+'px)');
 	 	
-	 	nr = newrule.join('')
-		perspective.innerText = value.replace(/\D/g,'');
+	nr = newrule.join('')
+	perspective.innerText = value.replace(/\D/g,'');
 	 	
-	 	console.log( nr );
-		css.insertRule(nr,1); // Insert at the old position.
-		css.deleteRule(2);    // Delete what is now the second rule.
+	css.insertRule(nr,1); // Insert at the old position.
+	css.deleteRule(2);    // Delete what is now the second rule.
 }
 
 form.addEventListener('submit', function(e){
