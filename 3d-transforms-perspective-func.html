@@ -49,7 +49,7 @@ function updateStyle( value ){
 	newrule[1] = oldrule[1].replace(/(perspective\()\d{1,}px\)/i, "$1"+value+'px)');
 	 	
 	nr = newrule.join('')
-	perspective.innerText = value.replace(/\D/g,'');
+	perspective.innerText = +(value);
 	 	
 	css.insertRule(nr,1); // Insert at the old position.
 	css.deleteRule(2);    // Delete what is now the second rule.
@@ -77,14 +77,14 @@ form.addEventListener('change', function(e){
 	updateStyle( value );
 },false);
 
-document.addEventListener('DOMContentLoaded', function(e){
+window.addEventListener('DOMContentLoaded', function(e){
 	document.getElementById('perspvalue').innerText = document.getElementById('perspective').value;
 },false)
 
 /*
-	   For browsers that don't support range, 
-	   and run the risk of a zero value input. 
-	*/
+   For browsers that don't support range, 
+   and run the risk of a zero value input. 
+*/
 function removeError(){
 	var err = document.getElementById('error');
 	if( err ){
