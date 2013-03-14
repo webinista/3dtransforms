@@ -10,6 +10,7 @@
 	   -moz-transform: translateZ(0);
 	    -ms-transform: translateZ(0);
 	}
+	.fxd{font-family: monospace;}
 	</style>
 </head>
 <body>
@@ -21,7 +22,7 @@
     <form id="changetranslate" action="#">
     	<p><label for="translateZ">translateZ(</label>
     	<input type="range" id="translateZ" value="0" min="-500" max="500" step="100">
-    	<span id="translateZvalue"></span>px) 
+    	<span class="fxd"><span id="translateZvalue"></span>px)</span> 
     	<button type="reset">Reset</button></p>
     </form>
 
@@ -35,20 +36,28 @@
 <script>
 var form = document.forms[0];
 
+var updateStyles = function(value){
+	var css = document.styleSheets[1],  // using the embedded style sheet.
+		v = value+''; // force to string
+		newrule = css.cssRules[0].cssText.replace(/([-0-9]{1,})(px|em|rem|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)/, value+"$2");
+	
+	css.insertRule(newrule,0); // Insert at the top of the rule stack.
+	css.deleteRule(1);         // Delete what is now the second rule.
+}
+
+
+form.addEventListener('submit', function(e){
+	e.preventDefault();
+} ,false);
+
 form.addEventListener('reset', function(e){
-	var css = document.styleSheets[1],
-	    newrule = css.cssRules[0].cssText.replace(/([-0-9]{1,})(px|em|rem|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)/, 0);
-	    css.insertRule(newrule,0); // Insert at the top of the rule stack.
-	    css.deleteRule(1);         // Delete what is now the second rule.
+	updateStyles(0);
 } ,false);
 
 form.addEventListener('change', function(e){
 	e.preventDefault();
-	var css = document.styleSheets[1],  // using the embedded style sheet.
-		tz = document.getElementById('translateZ'),
-		newrule = css.cssRules[0].cssText.replace(/([-0-9]{1,})(px|em|rem|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)/, tz.value+"$2");
-		css.insertRule(newrule,0); // Insert at the top of the rule stack.
-		css.deleteRule(1);         // Delete what is now the second rule.
+	var tz = document.getElementById('translateZ').value;
+	updateStyles(tz);
 },false)
 
 </script>
