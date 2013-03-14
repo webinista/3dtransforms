@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>3D CSS Transforms: Perspective</title>
+	<title>3D CSS Transforms: Perspective function</title>
 	<link rel="stylesheet" href="3d-transforms.css" type="text/css">
 	<style>
         #stage{margin:0;}
@@ -10,6 +10,7 @@
             -webkit-transform: perspective(1000px) rotate3d(1,0,0,45deg);
                -moz-transform: perspective(1000px) rotate3d(1,0,0,45deg);
                 -ms-transform: perspective(1000px) rotate3d(1,0,0,45deg);
+                    transform: perspective(1000px) rotate3d(1,0,0,45deg);
         }
         #perspvalue{font-family:monospace;}
 	</style>
@@ -60,17 +61,46 @@ form.addEventListener('submit', function(e){
 
 form.addEventListener('reset', function(e){
 	updateStyle(1000);
+	removeError(); 
 }, false);
 
 form.addEventListener('change', function(e){
 	e.preventDefault();
 	var value = document.getElementById('perspective').value;
+	// Remove the error message if there is one.
+	removeError();
+	
+	if( value <= 0 ){
+		showError();
+		return;
+	} 
 	updateStyle( value );
 },false);
 
 document.addEventListener('DOMContentLoaded', function(e){
 	document.getElementById('perspvalue').innerText = document.getElementById('perspective').value;
 },false)
+
+/*
+	   For browsers that don't support range, 
+	   and run the risk of a zero value input. 
+	*/
+function removeError(){
+	var err = document.getElementById('error');
+	if( err ){
+		err.parentNode.removeChild(err);
+	}
+}
+
+function showError(){
+	var msg = document.createTextNode('Value must be greater than zero.'),
+	err = document.createElement('p');
+		
+	err.id = 'error';
+	err.appendChild(msg);
+			
+	form.appendChild(err);
+}
 
 </script>
 </body>
