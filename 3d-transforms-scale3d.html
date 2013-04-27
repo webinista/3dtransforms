@@ -15,7 +15,6 @@
 		  Safari 6.0.2 renders this differently than Chromium-descended 
 		  WebKits currently do. Using 'flat' brings the differences in line,
 		  but undoes the true 3D effect you get with Safari.
-		  [-TBB 2013.02.12]
 		 */
  	
 		-webkit-transform-style: preserve-3d;
@@ -24,23 +23,22 @@
 				transform-style: preserve-3d;
 				
 				position:relative;
-				z-index:2;
+				z-index:1;
  	}
  	
  	#wrap{
     -webkit-transform-style: preserve-3d;
-    	/* 
-    	  Firefox requires the transform-style
-    	  in order to work.
-    	*/
-	     	transform-style: preserve-3d;
+   	   -moz-transform-style: preserve-3d;
+   	    -ms-transform-style: preserve-3d;
+         	transform-style: preserve-3d;
 			
 		/* 
 		  IE 10 requires the perspective on 
 		  #wrap as well.
 		*/
 			-ms-perspective: 300px;
-			
+			position:relative;
+			z-index:2
 				 
  	}
  	
@@ -61,14 +59,14 @@
 		text-align: center;
 
 		-webkit-transform: rotateY(45deg);
-		   -moz-transform: rotateY(-45deg); 
+		   -moz-transform: rotateY(45deg); 
 		    -ms-transform: rotateY(45deg); 
 		        transform: rotateY(45deg); 
-		 		
 	}
 
 	.plane:first-child{
-    	background: rgba(255,102,255,.7);
+    	background: rgba(255,102,255,1); 
+    	
 	}
 	.plane:nth-child(2){
 		background: rgba(255,204,0,.7);
@@ -77,13 +75,14 @@
 		background: rgba(0,0,255,.7);
 	}
 	
-	header,form{
+	header, form{
 		background: rgba(255,255,255,.9);
 		position:relative;
 	}
 	form{	
 		width:inherit;
 		z-index:9999;
+		position:relative;
 	}
 	form p{
 		display:inline-block;
@@ -95,26 +94,26 @@
 <body>
 	 <header>
         <h1>3D CSS Transforms: <code>scale3d()</code></h1>
-        <p>Adjust the values below to understand the effect of <code id="r3d">scale3d()</code>. The objects below have been rotated 45 degrees along the Y axis. (You can also press the <kbd>Esc</kbd> key to reset the form.) </p>
+        <p>Adjust the values below to understand the effect of <code id="r3d">scale3d()</code>. The objects below have been rotated 45 degrees along the Y axis. (You can navigate between fields using the <kbd>Tab</kbd> key, and use the <kbd>Esc</kbd> key to reset the form.) </p>
     </header>
     
  <form action="#">
     	<p>
     	<label for="x">x</label>
-    	<input type="number" id="x" name="x" value="1" step=".5">
+    	<input type="number" id="x" name="x" value="1" step=".5" tabindex="1">
     	</p>
     	
     	<p>
     	<label for="y">y</label>
-    	<input type="number" id="y" name="y" value="1" step=".5">
+    	<input type="number" id="y" name="y" value="1" step=".5" tabindex="2">
     	</p>
     	
     	<p>
     	<label for="z">z</label>
-    	<input type="number" id="z" name="z" value="1" step=".5">
+    	<input type="number" id="z" name="z" value="1" step=".5" tabindex="3">
     	</p>
 
-    	<p><button type="reset">Reset</button></p>
+    	<p><button type="reset" tabindex="4">Reset</button></p>
     	<br style="clear:both;">
     </form> 
 

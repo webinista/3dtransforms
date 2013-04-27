@@ -80,9 +80,8 @@
 	},false);
 	
 	f.addEventListener('reset',function(e){ 
-		var startval = d.getElementById('startval'), 
-			val = startval.getAttribute('data-start');
-		updateStyles( val );
+		var startval = d.getElementById('perspective').getAttribute('min');
+		updateStyles( startval );
 		removeError(); 
 
 	},false);
