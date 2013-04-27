@@ -286,7 +286,7 @@
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
-<p class="note"><b>Note:</b> Here we are using un-prefixed versions of these properties. Some browsers and browser versions still require a prefix.</p>
+<p class="note"><b>Note:</b> Though in this article, we are using un-prefixed versions of these properties. Some current browsers and some older browser versions still require a prefix.</p>
 
 <p>You've probably noticed that we applied our <code>perspective</code> property to <code>#stage</code> rather than to its child elements. That's because <code>perspective</code> sets the stage, so to speak, for the transforms applied to its children (<a href="#perspective1">Figure 3</a>). Without the <code>perspective</code> property, your transforms may appear flat and two-dimensional (<a href="3d-transforms-perspective.html">view a demo</a>).</p>
 </p>
@@ -373,7 +373,7 @@
 
 <figure id="transformstyle">
 <img src="3d-transforms-transstyle.png">
-<figcaption>Figure 6: The card on the left has a <code>transform-style</code> of <code>flat</code> while the one on the right has a value of <code>preserve-3d</code>. <mark>(CHRIS - ALSO, IT WOULD BE MORE EFFECTIVE TO DEMONSTRATE THIS BY SHOWING TWO CARDS, SEPARATED IN 3D SPACE USING TRANSLATEZ AND A BIT OF SKEW, SO THAT YOU CAN SEE THE DIFFERENT POSITION IN 3D SPACE, WHICH IS BROKEN IF TRANSFORM-STYLE IS FLAT.)</mark></figcaption>
+<figcaption>Figure 6: The card on the left has a <code>transform-style</code> of <code>flat</code> while the one on the right has a value of <code>preserve-3d</code>.</figcaption>
 </figure>
 
 <p>Using <code>transform-style: preserve-3d</code> also establishes a stacking context but in some cases, a CSS property can override this. According to their respective specifications, the following properties and values require the user agent to create a flattened representation of child elements before they can be applied.</p>
@@ -401,14 +401,14 @@
 
 <h3 id="perspectivefunction"><code>perspective()</code></h3>
 
-<p>The <code>perspective()</code> function represents the distance of the z-plane (z = 0) from the viewer. Its argument must have a length such as pixels or ems, and a value greater than zero. Using it causes points to be scaled in the X and Y directions based on their Z values (see <a href="#perspectivefunc">Figure 7</a>). Lower values create a more exaggerated perspective effect, while higher values do the opposite.</p>
+<p>The <code>perspective()</code> function represents the distance of the z-plane (z = 0) from the viewer. Its argument must have a length such as pixels or ems, and a value greater than zero. Using it causes points to be scaled in the X and Y directions based on their Z values (see <a href="#perspectivefunc">Figure 7</a>). Lower values create a more exaggerated perspective effect, while higher values do the opposite. Try the <a href="3d-transforms-perspective-func.html">perspective function demo</a> to get a sense of how it works.</p>
 
 <figure id="perspectivefunc">
 <img src="3d-transforms-perspective-func.png">
 <figcaption>Figure 7: The second figure has a <code>transform: perspective(200px) rotate3d(20,10,0,-45deg)</code> style applied.</figcaption>
 </figure>
 
-<p>By using the <code>perspective()</code> function, you're creating a <strong>perspective projection matrix</strong>. What's a matrix? Keep reading. (CHRIS - YOU SEEM TO HAVE AN EXAMPLE RELATING TO THIS, BUT YOU DON'T LINK TO IT. UNFINISHED?)</p>
+<p>By using the <code>perspective()</code> function, you're creating a <strong>perspective projection matrix</strong>. What's a matrix? Keep reading.</p>
 
 
 <h3 id="matrix3d">Matrices, vectors, and <code>matrix3d()</code></h3>
