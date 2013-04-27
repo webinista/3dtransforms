@@ -148,10 +148,10 @@
 	<script type="application/javascript" src="3d-pagevis.js"></script>
 	<script type="application/javascript" src="3d-transforms-pf.js"></script>
 	<script type="application/javascript">
-	(function(){
-		var rxyz = document.getElementById('rxyz');
+	(function(d){
+		var rxyz = d.getElementById('rxyz');
 		rxyz.addEventListener('change', function(e){
-			var stage = document.getElementById('stage');	
+			var stage = d.getElementById('stage');	
 			stage.className = '';
 			switch( e.target.id ){
 				case 'rx':
@@ -167,17 +167,17 @@
 		}, false);
 	
 		rxyz.addEventListener('reset', function(e){
-			var stage = document.getElementById('stage');	
+			var stage = d.getElementById('stage');	
 			stage.className = '';	
 		}, false);
 	
 		// Resets the form and stops the animation if the tab loses focus.
-		document.addEventListener('visibilitychange', function(e){
-			if( document.hidden ){
+		d.addEventListener('visibilitychange', function(e){
+			if( d.hidden ){
 				rxyz.reset();
 			}
 		},false);
-	})();
+	})(document);
 	</script>
 
 </body>

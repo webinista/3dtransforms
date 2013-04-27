@@ -69,14 +69,14 @@
 
 <script type="application/javascript" src="3d-transforms-escreset.js"></script>
 <script>
-(function(){
-	var form   = document.forms[0],
-	    inputs = document.querySelectorAll('input'),
+(function(d){
+	var form   = d.forms[0],
+	    inputs = d.querySelectorAll('input'),
 		updatecss, 
 		getmatrices;
 			
 	getmatrices = function(){
-		var pl = document.querySelector('.plane');
+		var pl = d.querySelector('.plane');
 		
 		if( window.console ){
 			var prefix = ['-webkit-','-ms-','-moz-','-o-',''];
@@ -95,7 +95,7 @@
 		e.stopImmediatePropagation();
 		e.stopPropagation();
 		
-		var css = document.styleSheets[1],  // using the embedded style sheet.
+		var css = d.styleSheets[1],  // using the embedded style sheet.
 				inp = inputs,
 				current = css.cssRules[0].cssText.split(':'),
 				val = [],
@@ -132,7 +132,7 @@
 		e.preventDefault(); 
 	},false);
 
-})();
+})(document);
 </script>
 
 

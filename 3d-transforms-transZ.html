@@ -34,32 +34,33 @@
 
 <script type="application/javascript" src="3d-transforms-escreset.js"></script>
 <script>
-var form = document.forms[0];
+(function(d){
+	var form = document.forms[0];
 
-var updateStyles = function(value){
-	var css = document.styleSheets[1],  // using the embedded style sheet.
-		v = value+''; // force to string
-		newrule = css.cssRules[0].cssText.replace(/([-0-9]{1,})(px|em|rem|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)/, value+"$2");
+	var updateStyles = function(value){
+		var css = d.styleSheets[1],  // using the embedded style sheet.
+			v = value+''; // force to string
+			newrule = css.cssRules[0].cssText.replace(/([-0-9]{1,})(px|em|rem|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)/, value+"$2");
 	
-	css.insertRule(newrule,0); // Insert at the top of the rule stack.
-	css.deleteRule(1);         // Delete what is now the second rule.
-}
+		css.insertRule(newrule,0); // Insert at the top of the rule stack.
+		css.deleteRule(1);         // Delete what is now the second rule.
+	}
 
 
-form.addEventListener('submit', function(e){
-	e.preventDefault();
-} ,false);
+	form.addEventListener('submit', function(e){
+		e.preventDefault();
+	} ,false);
 
-form.addEventListener('reset', function(e){
-	updateStyles(0);
-} ,false);
+	form.addEventListener('reset', function(e){
+		updateStyles(0);
+	} ,false);
 
-form.addEventListener('change', function(e){
-	e.preventDefault();
-	var tz = document.getElementById('translateZ').value;
-	updateStyles(tz);
-},false)
-
+	form.addEventListener('change', function(e){
+		e.preventDefault();
+		var tz = d.getElementById('translateZ').value;
+		updateStyles(tz);
+	},false)
+})(document)
 </script>
 
 

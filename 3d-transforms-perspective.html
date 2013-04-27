@@ -42,17 +42,17 @@
 
 <script type="application/javascript" src="3d-transforms-pf.js"></script>
 <script type="application/javascript">
-(function(){
-	var toggle = document.getElementById('toggle');
+(function(d){
+	var toggle = d.getElementById('toggle');
 
 	if( toggle ){
 		toggle.addEventListener('change', function(e){
 			e.preventDefault();
-			var stage = document.getElementById('stage');
+			var stage = d.getElementById('stage');
 			e.target.checked ? stage.classList.add('perspective') : stage.classList.remove('perspective');
 		}, false);
 	}
-})();
+})(document);
 
 </script>
 

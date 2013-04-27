@@ -60,9 +60,9 @@
 		
 		updateStyles = function(value){
 			var c = css, 
-			persp = c.cssRules[0].cssText.split(':'),
+			persp = c.cssRules[0].cssText.split(':'), // grabs first rule in that sheet & splits it.
 			newrule = persp[0],
-			startval = d.getElementById('startval'); // grabs first rule in that sheet & splits it.
+			startval = d.getElementById('startval'); 
 		
 			persp[1] = ': ';
 			persp[2] = value;
@@ -72,7 +72,6 @@
 		
 			c.insertRule(newrule ,0); // Insert at the top of the rule stack.
 			c.deleteRule(1);         // Delete what is now the second rule.
-
 		};
 	
 	f.addEventListener('submit',function(e){ 
