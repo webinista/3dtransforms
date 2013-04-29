@@ -33,6 +33,7 @@
 		    <code>rotate3d()</code>, <code>rotateX()</code> and <code>rotateY()</code></a>
 		</li>
 	</ol></li>
+	<li><a href="#learnmore">Learn More</a></li>
 </ol>
 
 <p>Opera 14 adds a lot of goodies under its hood, including <a href="http://www.w3.org/TR/css3-transforms/">three-dimensional CSS transforms</a> (<a href="http://dev.opera.com/articles/view/css3-transitions-and-2d-transforms/">2D transforms</a> have been available since Opera 10.50). In this article we'll dig in to 3D transforms, looking at the fundamental differences compared to 2D, the 3D transforms available, and sharing some demos to show how these work.</p>
@@ -51,7 +52,7 @@
 <p>If we think of our drawing surface as a <a href="http://en.wikipedia.org/wiki/Coordinate_system">coordinate system</a>, we can also think of our vanishing point as the <strong>origin</strong>. In a three-dimensional coordinate system, the origin is the location where the point along the x, y, and z axes is equal to zero (0,0,0) (see <a href="#origin">Figure 2</a>).</p>
 
 <figure id="origin">
-<!-- SVG --->
+<!-- SVG -->
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -318,7 +319,7 @@
     perspective-origin: 200% 1500px;
 }</code></pre>
 
-<p>As <a href="#persporigin">shown below</a>, this CSS creates the effect of looking at our child elements towards a point that is 200% along the x-axis and 1500 pixels along the y-axis.</p>
+<p>As <a href="#persporigin">shown below</a> in Figure 4, this CSS creates the effect of looking at our child elements towards a point that is 200% along the x-axis and 1500 pixels along the y-axis.</p>
 
 <figure id="persporigin">
 <img src="3d-transforms-perspective-origin.png">
@@ -367,13 +368,20 @@
 
 <h4 id="transstyle">Setting a <code>transform-style</code></h4>
 
-<p>As with a paper drawing, three-dimensional transforms map three dimensions of coordinates into the two dimensions of a screen. By default, transformed objects behave as a single plane. However, we can mimic multi-sided objects by using the <code>transform-style</code> property. Valid values for the <code>transform-style</code> property are <code>flat</code> and <code>preserve-3d</code>. The default is <code>flat</code>.</p>
+<p>As with a paper drawing, three-dimensional transforms map three dimensions of coordinates into the two dimensions of a screen. By default, transformed objects behave as a single plane. To mimic depth and dimension, we need to explicitly change that behavior, with the the <code>transform-style</code> property. Valid values for the <code>transform-style</code> property are <code>flat</code> and <code>preserve-3d</code>. The default is <code>flat</code>.</p>
 
-<p>In <a href="#transformstyle">Figure 6</a> below, we have two cards with the same markup and largely the same CSS. However, for the left card, the value of the <code>transform-style</code> property is <code>flat</code>. For the right card, the value is <code>preserve-3d</code>. If we flip them over, as shown in our <a href="3d-transforms-transform-style.html">3D transform-style demo</a>, we can see that the left card appears to be a flattened plane. We can, however, see the other side of the card on the right.</p>
+<p>In <a href="#transformstyle">Figure 6</a> below, we have three objects whose positions have been translated in the z-direction. Their parent element has also been rotated slightly. When the value of <code>transform-style</code> &#8212; applied here to the parent element &#8212; is <code>preserve-3d</code>, we see that the transformation shows three elements in faux three dimensional space.</p> 
 
 <figure id="transformstyle">
 <img src="3d-transforms-transstyle.png">
-<figcaption>Figure 6: The card on the left has a <code>transform-style</code> of <code>flat</code> while the one on the right has a value of <code>preserve-3d</code>.</figcaption>
+<figcaption>Figure 6: The parent element for these three objects has a <code>transform-style</code> value of <code>preserve-3d</code>.</figcaption>
+</figure>
+
+<p>Contrast that with <a href="#transformstyleflat">Figure 7</a>, in which the value of <code>transform-style</code> is <code>flat</code>. These same objects are now rendered as a flattened stack (<a href="http://localhost/3dtransforms/3d-transforms-transform-style.html">demo</a>).</p>
+
+<figure id="transformstyleflat">
+<img src="3d-transforms-transstyle-flat.png">
+<figcaption>Figure 7: The parent element in this example has a  <code>transform-style</code> value of <code>flat</code>, instead of <code>preserve-3d</code>.</figcaption>
 </figure>
 
 <p>Using <code>transform-style: preserve-3d</code> also establishes a stacking context but in some cases, a CSS property can override this. According to their respective specifications, the following properties and values require the user agent to create a flattened representation of child elements before they can be applied.</p>
@@ -384,7 +392,7 @@
 	<li><code>filter</code> when the value is other than <code>none</code></li>
 </ul>
 
-<p></p>
+<p>If your transform isn't rendering correctly, despite using <code>transform-style: preserve-3d</code>, one of these properties is probably the culprit.</p>
 
 
 <h2 id="transformfuncs">The transform functions</h2>
@@ -454,7 +462,7 @@ console.log(matrix);</code></pre>
 
 <p>Using <code>getComputedStyle()</code> has its limits of course. It only returns the computed value for a single element. It does not tell you the whether its parent element has also been transformed.</p>
 
-<p>Since using <code>matrix3d()</code> can make your CSS more obtuse than necessary, it's best to stick to the transform functions. I'll assume you're already familiar with two-dimensional transforms. For the rest of this article, we'll focus exclusively on 3D transform functions. if you need a primer on 2D transforms, read <a href="http://dev.opera.com/articles/view/css3-transitions-and-2d-transforms/">CSS3 transitions and 2D transforms</a>, our previous article on the subject.</p>
+<p>Since using <code>matrix3d()</code> can make your CSS more obtuse than necessary, it's best to stick to the transform functions. I'll assume you're already familiar with two-dimensional transforms. For the rest of this article, we'll focus exclusively on 3D transform functions. If you need a primer on two-dimensional transforms, read <a href="http://dev.opera.com/articles/view/css3-transitions-and-2d-transforms/">CSS3 transitions and 2D transforms</a>, our previous article on the subject.</p>
 
 <h3 id="translating">Translating objects with <code>translateZ()</code> and <code>translate3d()</code></h3>
 
@@ -489,26 +497,26 @@ console.log(matrix);</code></pre>
 
 <figure id="rotateYscaleZ">
 	<img src="3d-transforms-Zmorethan0.gif" alt="Finding the matrix product of a y-axis rotation and a z-axis scaling transform">
-	<figcaption>
+	<figcaption>Figure 13: Finding the transformed coordinates of a point at (100,200,0).</figcaption>
 </figure>
-</div> 
+
 
 <p>As with two-dimensional scaling, positive numbers greater than 1 increase the value of the z-coordinate. Positive numbers that are greater than zero but less than 1 will decrease them. Negative values for scaling along the z axis will cause the object to appear flipped or mirrored. You can get a sense of how these values interact in the <a href="3d-transforms-scale3d.html">3d scaling demo</a>.</p>
 
 <h3 id="rotating">Rotating objects with <code>rotateX()</code>, <code>rotateY()</code> and <code>rotateZ()</code> and <code>rotate3d()</code></h3>
 
-<p>As these function names suggest, <code>rotateX()</code>, <code>rotateY()</code> and <code>rotateZ()</code> rotate an object around the x, y or z axis. Rotations using <code>rotateX()</code> spin elements around a horizontal axis (<a href="#rotatex">Figure 13</a>), while those using <code>rotateY()</code> spin elements around a vertical axis.</p>
+<p>As these function names suggest, <code>rotateX()</code>, <code>rotateY()</code> and <code>rotateZ()</code> rotate an object around the x, y or z axis. Rotations using <code>rotateX()</code> spin elements around a horizontal axis (<a href="#rotatex">Figure 14</a>), while those using <code>rotateY()</code> spin elements around a vertical axis.</p>
 
 <figure id="rotatex">
 <img src="3d-transforms-rotateX.png">
-<figcaption>Figure 13: Using <code>rotateX()</code> to tilt objects.</figcaption>
+<figcaption>Figure 14: Using <code>rotateX()</code> to tilt objects.</figcaption>
 </figure>
 
 <p>Rotations using <code>rotateZ()</code> are like those of a pinwheel or the hands of an analog clock (<a href="#rotatez">Figure 14</a>). They spin around the z-axis, behaving exactly like the 2D <code>rotate()</code> transform function. In fact, <code>rotateZ()</code> and <code>rotate()</code> are aliases. If you are only rotating around the z-axis, <code>rotate()</code> offers the broadest compatibility with older browsers. You can see how each of these functions work in this <a href="3d-transforms-rotateXYZ.html">3D rotation demo</a>.</p>
 
 <figure id="rotatez">
 <img src="3d-transforms-rotateZ.png">
-<figcaption>Figure 14: Using <code>rotateZ()</code> to tilt objects.</figcaption>
+<figcaption>Figure 15: Using <code>rotateZ()</code> to tilt objects.</figcaption>
 </figure>
 
 <p>Each of these functions accept a CSS angle as an argument. Valid values may be degrees (e.g. <code>45deg</code>), radians (e.g. <code>.21rad</code>), gradians (e.g. <code>100grad</code>), or turns (e.g. <code>.25turn</code>). Units are defined in the <a href="http://www.w3.org/TR/css3-values/#angles">angles section</a> of the CSS Values and Units Module Level 3 specification.</p>
@@ -517,7 +525,7 @@ console.log(matrix);</code></pre>
 
 <figure id="rotate3d">
 <img src="3d-transforms-rotate3d.png">
-<figcaption>Figure 15: Rotating around two axes using  <code>rotate3d(1,1,0,45deg)</code>.</figcaption>
+<figcaption>Figure 16: Rotating around two axes using  <code>rotate3d(1,1,0,45deg)</code>.</figcaption>
 </figure>
 
 <p>In <a href="#rotate3d">Figure 15</a>, we've tilted these objects by 45 degrees along both the x and y axes. This is actually the equivalent of <code>transform: rotateX(45deg) rotateY(45deg)</code>. Similarly, <code>rotate3d(0,0,1,45deg)</code> is equivalent to <code>rotateZ(45deg)</code> and <code>rotate(45deg)</code>.</p> 
@@ -534,7 +542,7 @@ console.log(matrix);</code></pre>
 
 <p>As you can see, the largest difference between the two matrices are the fifth and tenth parameters. They're 10 times greater in the first matrix than the second, but the values are still small. As a result, when the matrix is applied, the effect is slightly, not wildly different. By manipulating each value in the <a href="3d-transforms-rotate3d.html"><code>rotate3d()</code></a> demo, you can get a better sense of how they interplay.</p>
 
-<h2>Learn More</h2>
+<h2 id="learnmore">Learn More</h2>
 
 <p>I hope I've cleared up how three-dimensional transforms work without throwing too much linear algebra and geometry at you. Understanding the underlying math goes a long way toward understanding how transforms work and where they might go wrong. I found the following resources helpful.</p>
 
