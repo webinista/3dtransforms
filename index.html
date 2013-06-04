@@ -72,7 +72,7 @@
 	
 <p><strong>Cumulative</strong> means that children inherit the transforms applied to their parents. In practical terms, this means, <code>&lt;div style="transform: rotateY(45deg) scaleZ(3)"&gt;&lt;/div&gt;</code> is the equivalent of a pair of nested <code>div</code> elements, with a rotation transform applied to the parent, and a scaling transform applied to the child. Cumulative also means that a list of transform functions are applied in the order they are listed.</p>  
 
-<p>Transforms may not be rendered for a couple of reasons. Usually it's because the transform applied has caused the coordinates of the object to exist outside of the viewport. With transforms along the z-axis, for example, this could mean the coordinates are &#8220;behind&#8221; the user. In other cases, a transforms might not be applied because the cumulative transform matrix is <em><a href="http://en.wikipedia.org/wiki/Invertible_matrix">non-invertible</a></em> &#8212; in non-nerdy terms, the math just doesn't work out.</p> 
+<p>Transforms may not be rendered for a couple of reasons. Usually it's because the transform applied has caused the coordinates of the object to exist outside of the viewport. With transforms along the z-axis, for example, this could mean the coordinates are &#8220;behind&#8221; the user. In other cases, a transform might not be applied because the cumulative transform matrix is <em><a href="http://en.wikipedia.org/wiki/Invertible_matrix">non-invertible</a></em> &#8212; in non-nerdy terms, the math just doesn't work out.</p> 
 
 <h3 id="perspectiveprop">The <code>perspective</code> property</h3>
 
@@ -191,7 +191,7 @@
 <p class="caption">Figure 6: The parent element for these three objects has a <code>transform-style</code> value of <code>preserve-3d</code>.</p>
 </div>
 
-<p>Contrast that with <a href="#transformstyleflat">Figure 7</a>, in which the value of <code>transform-style</code> is <code>flat</code>. These same objects are now rendered as a flattened stack (<a href="http://localhost/3dtransforms/3d-transforms-transform-style.html">see <code>transform-style</code> demo</a>).</p>
+<p>Contrast that with <a href="#transformstyleflat">Figure 7</a>, in which the value of <code>transform-style</code> is <code>flat</code>. These same objects are now rendered as a flattened stack (<a href="3d-transforms-transform-style.html">see <code>transform-style</code> demo</a>).</p>
 
 <div id="transformstyleflat">
 <p><img src="3d-transforms-transstyle-flat.png"></p>
